@@ -4,19 +4,61 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Solicitação de Certidões - 9tab</title>
-
-  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/utilities.css">
 </head>
 <body>
 
-  <main class="container">
-    <h1>Solicitação de Certidões</h1>
-    <p>Aplicação em desenvolvimento.</p>
+  <main id="app" class="app">
+
+    <section id="login-section" class="card">
+      <h1>Solicitação de Certidões</h1>
+      <p>Bem-vindo ao sistema de solicitação de certidões.</p>
+      <button id="google-login-button" class="primary-button">
+        Entrar com Google
+      </button>
+
+    </section>
+
+    <section id="denied-section" class="card is-hidden">
+      <h1>Acesso não autorizado</h1>
+      <p>Seu usuário não possui permissão para acessar este formulário.</p>
+    </section>
+
+    <section id="authenticated-section" class="card is-hidden">
+
+      <header class="app-header">
+        <div>
+          <h1>Solicitação de Certidões</h1>
+          <p id="user-info"></p>
+        </div>
+      </header>
+      
+      <nav class="tabs">
+        <button class="tab-button is-active" data-tab="request-panel">Solicitar</button>
+        <button class="tab-button" data-tab="query-panel">Consultar</button>
+      </nav>
+        
+      <section id="request-panel" class="tab-panel">
+        <h2>Nova solicitação</h2>
+        <p>O formulário será construído aqui.</p>
+      </section>
+
+      <section id="query-panel" class="tab-panel is-hidden">
+        <h2>Consultar solicitações</h2>
+        <p>A consulta de status será construída aqui.</p>
+      </section>
+
+    </section>
+
   </main>
 
   <script src="js/config.js"></script>
   <script src="js/api.js"></script>
   <script src="js/auth.js"></script>
   <script src="js/app.js"></script>
+  
 </body>
 </html>
