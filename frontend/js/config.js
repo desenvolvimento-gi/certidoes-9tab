@@ -1,0 +1,4 @@
+const CONFIG = {
+  GOOGLE_CLIENT_ID: "",
+  APPS_SCRIPT_URL: ""
+};

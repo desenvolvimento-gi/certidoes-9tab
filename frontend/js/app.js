@@ -1,1 +1,1 @@
-// Ponto de entrada da aplicação
+console.log("Aplicação Certidões 9tab iniciada.");
