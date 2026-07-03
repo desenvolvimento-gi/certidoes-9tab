@@ -3,5 +3,6 @@
   align-items: flex-start; /* center the content vertically */
   justify-content: center; /* center the content */
   height: 100vh; /* full viewport height */
-  padding: 20vh; /* add some padding */
+  padding: 12vh 16px 32px; /* padding for top, sides, and bottom */
+  box-sizing: border-box; /* include padding in the element's total width and height */
 }
