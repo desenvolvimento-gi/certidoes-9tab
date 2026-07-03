@@ -4,5 +4,4 @@
   justify-content: center; /* center the content */
   padding-top: 12vh; /* add top padding to create space from the top of the viewport */
   min-height: 100vh; /* ensure the app takes at least the full height of the viewport */
-
 }
