@@ -8,6 +8,10 @@
     box-shadow: 0 8px 24px rgba(0,0,0,0.08);
 }
 
+.card-title {
+    font-size: 2rem;
+}
+
 .primary-button {
     width: 100%;
     padding: 14px;
@@ -17,4 +21,8 @@
     color: white;
     font-size: 16px;
     cursor: pointer;
+}
+
+.primary-button:hover {
+    background-color: #155ec4;
 }

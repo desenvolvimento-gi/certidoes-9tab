@@ -1,6 +1,7 @@
 .app {
   display: flex; /* use flexbox for layout */ 
-  align-items: center; /* center the content vertically */
+  align-items: flex-start; /* center the content vertically */
   justify-content: center; /* center the content */
   height: 100vh; /* full viewport height */
+  padding: 20vh; /* add some padding */
 }
