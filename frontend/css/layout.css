@@ -2,7 +2,6 @@
   display: flex; /* use flexbox for layout */ 
   align-items: flex-start; /* align items to the start of the cross axis (top) */
   justify-content: center; /* center the content */
-  padding-top: 20vh; /* add top padding to create space from the top of the viewport */
-  height: 100vh; /* full viewport height */
-  
+  padding-top: 12vh; /* add top padding to create space from the top of the viewport */
+  min-height: 100vh; /* full viewport height */
 }
