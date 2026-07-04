@@ -1,16 +1,19 @@
 function showLogin() {
-  loginSection.classList.remove("is-hidden");
-  deniedSection.classList.add("is-hidden");
-  dashboardSection.classList.add("is-hidden");
+  DOM.loginSection.classList.remove("is-hidden");
+  DOM.deniedSection.classList.add("is-hidden");
+  DOM.authenticatedSection.classList.add("is-hidden");
 }
 
 function showDenied() {
-  loginSection.classList.add("is-hidden");
-  deniedSection.classList.remove("is-hidden");
-  dashboardSection.classList.add("is-hidden");
+  DOM.loginSection.classList.add("is-hidden");
+  DOM.deniedSection.classList.remove("is-hidden");
+  DOM.authenticatedSection.classList.add("is-hidden");
 }
 
-function showDashboard() {
-    loginSection.classList.add("is-hidden");
-    dashboardSection.classList.remove("is-hidden");
+function showDashboard(user) {
+  DOM.loginSection.classList.add("is-hidden");
+  DOM.deniedSection.classList.add("is-hidden");
+  DOM.authenticatedSection.classList.remove("is-hidden");
+
+  DOM.userInfo.textContent = `Bem-vindo, ${user.name} (${user.email})`;
 }

@@ -1,3 +1,10 @@
 function registerLoginEvents() {
-   loginButton.addEventListener("click", showDashboard);
+  DOM.googleLoginButton.addEventListener("click", () => {
+          const fakeUser = {
+              name: "William",
+              email: "william@email.com"
+          };
+
+          showDashboard(fakeUser);
+      });
 }
