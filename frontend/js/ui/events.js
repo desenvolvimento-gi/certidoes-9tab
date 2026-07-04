@@ -16,3 +16,17 @@ function registerTabEvents() {
     });
   });
 }
+
+function registerFormEvents() {
+  DOM.certificateType.addEventListener("change", showCertificateSection);
+
+  DOM.personTypeSelects.forEach((select) => {
+    select.addEventListener("change", () => {
+      showPersonBlock(select.dataset.personType, select.value);
+    });
+  });
+
+  DOM.civilType.addEventListener("change", showCivilBlock);
+
+  DOM.addPropertyItemButton.addEventListener("click", addPropertyItem);
+}
