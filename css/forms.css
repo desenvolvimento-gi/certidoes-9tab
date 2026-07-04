@@ -1,26 +1,47 @@
-.form-section,
-.form-subsection {
-  margin-top: 2rem;
-  padding: 1.5rem;
-  border: 1px solid #e5e7eb;
-  border-radius: 10px;
+/* ======================================================
+   Layout de formulários
+====================================================== */
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.25rem;
+  margin-bottom: 1.25rem;
 }
 
-.form-subsection {
-  background: #fafafa;
+.form-row--2 {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
-.form-section legend,
-.form-subsection legend {
-  padding: 0 0.5rem;
-  font-size: 1.1rem;
-  font-weight: 600;
+.form-row--3 {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
 }
+
+.form-row--protocol-type {
+  grid-template-columns: 180px 1fr;
+}
+
+.form-row--state-city {
+  grid-template-columns: 120px 1fr;
+}
+
+@media (max-width: 700px) {
+  .form-row,
+  .form-row--2,
+  .form-row--3,
+  .form-row--protocol-type,
+  .form-row--state-city {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ======================================================
+   Grupos e campos
+====================================================== */
 
 .form-group {
   display: flex;
   flex-direction: column;
-  margin-bottom: 1.25rem;
 }
 
 .form-group label {
@@ -31,10 +52,11 @@
 .form-group input,
 .form-group select {
   width: 100%;
-  max-width: 480px;
   padding: 0.75rem 0.9rem;
   border: 1px solid var(--border);
   border-radius: 8px;
+  background: #ffffff;
+  color: var(--text);
   font-size: 15px;
 }
 
@@ -45,27 +67,44 @@
   box-shadow: 0 0 0 3px rgba(26, 115, 232, 0.15);
 }
 
-.form-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 1rem;
+.form-group input:disabled,
+.form-group select:disabled {
+  background: #f3f4f6;
+  color: #6b7280;
+  cursor: not-allowed;
 }
 
-.form-grid-3 {
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-}
+/* ======================================================
+   Seções
+====================================================== */
 
-.form-actions {
+.form-section,
+.form-subsection {
   margin-top: 2rem;
+  padding: 1.5rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+}
+
+.form-section legend,
+.form-subsection legend {
+  padding: 0 0.5rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.form-subsection {
+  background: #fafafa;
 }
 
 .conditional-block {
-  margin-top: 1rem;
+  margin-top: 1.25rem;
 }
 
-@media (max-width: 720px) {
-  .form-grid,
-  .form-grid-3 {
-    grid-template-columns: 1fr;
-  }
+/* ======================================================
+   Ações
+====================================================== */
+
+.form-actions {
+  margin-top: 2rem;
 }

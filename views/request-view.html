@@ -1,20 +1,22 @@
 <h2>Nova solicitação</h2>
 
 <form id="request-form">
-  <div class="form-group">
-    <label for="tipoCertidao">Tipo de certidão *</label>
-    <select id="tipoCertidao" name="tipoCertidao">
-      <option value="">Selecione</option>
-      <option value="combo_internet">Combo de internet</option>
-      <option value="negativa_iptu">Negativa de IPTU</option>
-      <option value="registro_civil">Registro civil</option>
-      <option value="registro_imovel">Registro de imóvel</option>
-    </select>
-  </div>
+  <div class="form-row form-row--protocol-type">
+    <div class="form-group">
+      <label for="protocoloMobi">Protocolo MOBI *</label>
+      <input id="protocoloMobi" name="protocoloMobi" maxlength="6" data-only-numbers placeholder="4 a 6 dígitos">
+    </div>
 
-  <div class="form-group">
-    <label for="protocoloMobi">Protocolo MOBI *</label>
-    <input id="protocoloMobi" name="protocoloMobi" maxlength="6" data-only-numbers placeholder="Informe 4 a 6 dígitos">
+    <div class="form-group">
+      <label for="tipoCertidao">Tipo de certidão *</label>
+      <select id="tipoCertidao" name="tipoCertidao">
+        <option value="">Selecione</option>
+        <option value="combo_internet">Combo de internet</option>
+        <option value="negativa_iptu">Negativa de IPTU</option>
+        <option value="registro_civil">Registro civil</option>
+        <option value="registro_imovel">Registro de imóvel</option>
+      </select>
+    </div>
   </div>
 
   <fieldset id="bloco_combo_internet" class="form-section form-block is-hidden">
@@ -30,19 +32,21 @@
     </div>
 
     <div id="combo_pf" class="conditional-block is-hidden">
-      <div class="form-group">
-        <label for="comboCpf">CPF *</label>
-        <input id="comboCpf" name="comboCpf" maxlength="11" data-only-numbers placeholder="Somente números">
+      <div class="form-row form-row--2">
+        <div class="form-group">
+          <label for="comboCpf">CPF *</label>
+          <input id="comboCpf" name="comboCpf" maxlength="11" data-only-numbers placeholder="Somente números">
+        </div>
+
+        <div class="form-group">
+          <label for="comboNascimento">Data de nascimento</label>
+          <input id="comboNascimento" name="comboNascimento" type="date">
+        </div>
       </div>
 
       <div class="form-group">
         <label for="comboNome">Nome completo</label>
         <input id="comboNome" name="comboNome">
-      </div>
-
-      <div class="form-group">
-        <label for="comboNascimento">Data de nascimento</label>
-        <input id="comboNascimento" name="comboNascimento" type="date">
       </div>
     </div>
 
@@ -57,18 +61,20 @@
   <fieldset id="bloco_negativa_iptu" class="form-section form-block is-hidden">
     <legend>Negativa de IPTU</legend>
 
-    <div class="form-group">
-      <label for="iptuIndicacaoFiscal">Número da indicação fiscal *</label>
-      <input id="iptuIndicacaoFiscal" name="iptuIndicacaoFiscal" maxlength="12" data-only-numbers placeholder="8 a 12 dígitos">
-    </div>
+    <div class="form-row form-row--2">
+      <div class="form-group">
+        <label for="iptuIndicacaoFiscal">Número da indicação fiscal *</label>
+        <input id="iptuIndicacaoFiscal" name="iptuIndicacaoFiscal" maxlength="12" data-only-numbers placeholder="8 a 12 dígitos">
+      </div>
 
-    <div class="form-group">
-      <label for="iptuTipoPessoa">Tipo de proprietário? *</label>
-      <select id="iptuTipoPessoa" name="iptuTipoPessoa" data-person-type="iptu">
-        <option value="">Selecione</option>
-        <option value="pf">Pessoa física</option>
-        <option value="pj">Pessoa jurídica</option>
-      </select>
+      <div class="form-group">
+        <label for="iptuTipoPessoa">Tipo de proprietário? *</label>
+        <select id="iptuTipoPessoa" name="iptuTipoPessoa" data-person-type="iptu">
+          <option value="">Selecione</option>
+          <option value="pf">Pessoa física</option>
+          <option value="pj">Pessoa jurídica</option>
+        </select>
+      </div>
     </div>
 
     <div id="iptu_pf" class="conditional-block is-hidden">
@@ -89,11 +95,11 @@
   <fieldset id="bloco_registro_civil" class="form-section form-block is-hidden">
     <legend>Registro civil</legend>
 
-    <div class="form-grid">
+    <div class="form-row form-row--state-city">
       <div class="form-group">
         <label for="civilEstado">Estado *</label>
         <select id="civilEstado" name="civilEstado">
-          <option value="">Selecione</option>
+          <option value="">UF</option>
           <option>AC</option><option>AL</option><option>AP</option><option>AM</option>
           <option>BA</option><option>CE</option><option>DF</option><option>ES</option>
           <option>GO</option><option>MA</option><option>MT</option><option>MS</option>
@@ -110,42 +116,48 @@
       </div>
     </div>
 
-    <div class="form-group">
-      <label for="civilCartorio">Cartório *</label>
-      <input id="civilCartorio" name="civilCartorio">
-    </div>
-
-    <div class="form-group">
-      <label for="civilTipo">Qual certidão? *</label>
-      <select id="civilTipo" name="civilTipo">
-        <option value="">Selecione</option>
-        <option value="nascimento">Nascimento</option>
-        <option value="casamento">Casamento</option>
-        <option value="obito">Óbito</option>
-      </select>
-    </div>
-
-    <div id="civil_nascimento" class="conditional-block civil-block is-hidden">
+    <div class="form-row form-row--2">
       <div class="form-group">
-        <label for="civilNascimentoNome">Nome completo *</label>
-        <input id="civilNascimentoNome" name="civilNascimentoNome">
+        <label for="civilCartorio">Cartório *</label>
+        <input id="civilCartorio" name="civilCartorio">
       </div>
 
       <div class="form-group">
-        <label for="civilNascimentoData">Data de nascimento *</label>
-        <input id="civilNascimentoData" name="civilNascimentoData" type="date">
+        <label for="civilTipo">Qual certidão? *</label>
+        <select id="civilTipo" name="civilTipo">
+          <option value="">Selecione</option>
+          <option value="nascimento">Nascimento</option>
+          <option value="casamento">Casamento</option>
+          <option value="obito">Óbito</option>
+        </select>
+      </div>
+    </div>
+
+    <div id="civil_nascimento" class="conditional-block civil-block is-hidden">
+      <div class="form-row form-row--2">
+        <div class="form-group">
+          <label for="civilNascimentoNome">Nome completo *</label>
+          <input id="civilNascimentoNome" name="civilNascimentoNome">
+        </div>
+
+        <div class="form-group">
+          <label for="civilNascimentoData">Data de nascimento *</label>
+          <input id="civilNascimentoData" name="civilNascimentoData" type="date">
+        </div>
       </div>
     </div>
 
     <div id="civil_casamento" class="conditional-block civil-block is-hidden">
-      <div class="form-group">
-        <label for="civilConjuge1">Nome completo do cônjuge 1 *</label>
-        <input id="civilConjuge1" name="civilConjuge1">
-      </div>
+      <div class="form-row form-row--2">
+        <div class="form-group">
+          <label for="civilConjuge1">Nome completo do cônjuge 1 *</label>
+          <input id="civilConjuge1" name="civilConjuge1">
+        </div>
 
-      <div class="form-group">
-        <label for="civilConjuge2">Nome completo do cônjuge 2 *</label>
-        <input id="civilConjuge2" name="civilConjuge2">
+        <div class="form-group">
+          <label for="civilConjuge2">Nome completo do cônjuge 2 *</label>
+          <input id="civilConjuge2" name="civilConjuge2">
+        </div>
       </div>
 
       <div class="form-group">
@@ -155,21 +167,23 @@
     </div>
 
     <div id="civil_obito" class="conditional-block civil-block is-hidden">
-      <div class="form-group">
-        <label for="civilObitoNome">Nome completo *</label>
-        <input id="civilObitoNome" name="civilObitoNome">
-      </div>
+      <div class="form-row form-row--2">
+        <div class="form-group">
+          <label for="civilObitoNome">Nome completo *</label>
+          <input id="civilObitoNome" name="civilObitoNome">
+        </div>
 
-      <div class="form-group">
-        <label for="civilObitoData">Data de óbito *</label>
-        <input id="civilObitoData" name="civilObitoData" type="date">
+        <div class="form-group">
+          <label for="civilObitoData">Data de óbito *</label>
+          <input id="civilObitoData" name="civilObitoData" type="date">
+        </div>
       </div>
     </div>
 
     <fieldset class="form-subsection">
       <legend>Informações do livro</legend>
 
-      <div class="form-grid form-grid-3">
+      <div class="form-row form-row--3">
         <div class="form-group">
           <label for="civilLivro">Livro</label>
           <input id="civilLivro" name="civilLivro" data-only-numbers placeholder="Somente números">

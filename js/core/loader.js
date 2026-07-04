@@ -1,20 +1,16 @@
-async function loadHtmlInto(containerSelector, path) {
-  const container = document.querySelector(containerSelector);
+async function loadView(containerId, viewName) {
+  const container = document.getElementById(containerId);
 
   if (!container) {
-    throw new Error(`Container não encontrado: ${containerSelector}`);
+    throw new Error(`Container não encontrado: ${containerId}`);
   }
 
-  const response = await fetch(path);
+  const response = await fetch(`views/${viewName}.html`);
 
   if (!response.ok) {
-    throw new Error(`Erro ao carregar ${path}: ${response.status}`);
+    throw new Error(`Erro ao carregar view: ${viewName}`);
   }
 
-  container.innerHTML = await response.text();
-}
-
-async function loadApplicationViews() {
-  await loadHtmlInto("#app-root", "views/app-shell.html");
-  await loadHtmlInto("#request-form-container", "views/request-form.html");
+  const html = await response.text();
+  container.innerHTML = html;
 }

@@ -46,8 +46,8 @@ certidoes-9tab/
 │
 ├── partials/
 │   ├── app-shell.html
-│   ├── request-form.html
-│   └── query-panel.html
+│   ├── request-view.html
+│   └── query-view.html
 │
 ├── backend/
 │   └── apps-script/
