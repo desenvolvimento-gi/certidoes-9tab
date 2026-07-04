@@ -38,3 +38,7 @@ OBJETIVO
 - implementar ações no app
 
 JAVASCRIPT
+- organização das responsabilidades
+
+DOM
+- visto o que é o DOM e seus principais métodos

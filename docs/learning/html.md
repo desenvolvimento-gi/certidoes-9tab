@@ -31,3 +31,27 @@ html não é layout, é semântica.
         aplicação: <script>
     </body>
 </html>
+
+
+## DATA ATTRIBUTES
+usado para atribuir propriedades extras nos elementos
+- data-anythings
+
+<article
+  id="electriccars"
+  data-columns="3"
+  data-index-number="12314"
+  data-parent="cars">
+  ...
+</article>
+
+e para acessar essas informações?
+
+- var article = document.getElementById("electriccars");
+    article.dataset.columns; // "3"
+    article.dataset.indexNumber; // "12314"
+    article.dataset.parent; // "cars"
+
+cada propriedade é uma string
+esses dados são acessíveis no CSS
+

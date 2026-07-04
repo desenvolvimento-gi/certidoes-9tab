@@ -4,7 +4,15 @@ function registerLoginEvents() {
               name: "William",
               email: "william@email.com"
           };
-
-          showDashboard(fakeUser);
+          showAuthenticated(fakeUser);
+          showTab("request-panel");
       });
+}
+
+function registerTabEvents() {
+  DOM.tabButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      showTab(button.dataset.tab);
+    });
+  });
 }

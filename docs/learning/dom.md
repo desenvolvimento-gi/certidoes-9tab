@@ -22,10 +22,12 @@ MÉTODOS DOM
     .addEventListener()
     .focus()
 
+
 CLASSLIST
 - separação javascript x css
 em vez de alterar estilos diretamente no javascript,
 é preferível deixar a responsabilidade com o CSS
+
 
 EVENTOS RECEBEM FUNÇÕES
 //hideLogin em vez de hideLogin()
@@ -33,3 +35,12 @@ EVENTOS RECEBEM FUNÇÕES
     "click",
     hideLogin
 );
+
+
+PESQUISAR ELEMENTOS SEM SABER O ID
+- document.querySelector()
+- document.querySelectorAll()
+
+
+QUAL BOTÃO FOI CLICADO?
+- event.currentTarget
