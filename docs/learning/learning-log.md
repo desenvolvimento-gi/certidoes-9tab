@@ -12,8 +12,8 @@ VSCODE
 - instalado o VS code
 
 DESENVOLVIMENTO-WEB
-- criado o padrão de organização de pastas
-- vistos conceitos de arquitetura e modularidade
+- organização de projetos web
+- arquitetura e modularidade
 
 GITHUB
 - conta no github
