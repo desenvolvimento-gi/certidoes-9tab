@@ -1,0 +1,35 @@
+:root {
+  --primary: #1a73e8;
+  --primary-hover: #155ec4;
+  --success: #166534;
+  --error: #991b1b;
+  --border: #d6d6d6;
+  --background: #f4f6f8;
+  --surface: #ffffff;
+  --text: #222222;
+  --muted: #6b7280;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--background);
+  color: var(--text);
+  font-family: "Segoe UI", Arial, sans-serif;
+}
+
+h1,
+h2,
+h3,
+p {
+  margin-top: 0;
+}
+
+button,
+input,
+select {
+  font: inherit;
+}

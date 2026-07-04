@@ -8,15 +8,15 @@
 }
 
 .form-section legend {
-  padding: 0 .5rem;
-  font-size: 1.1rem;
-  font-weight: 600;
+    padding: 0 .5rem;
+    font-size: 1.1rem;
+    font-weight: 600;
 }
 
 .form-group {
   display: flex;
   flex-direction: column;
-  margin-top: 1rem;
+  margin-top: 1.25rem;
 }
 
 .form-group label {
@@ -30,20 +30,16 @@
 .form-group select {
   width: 100%;
   max-width: 450px;
-  padding: .65rem .8rem;
+  padding: .75rem .9rem;
 
   border: 1px solid #d6d6d6;
-  border-radius: 6px;
+  border-radius: 8px;
 
   font-size: 15px;
 }
 
-/* Focus */
+/* Botão */
 
-.form-group input:focus,
-.form-group select:focus {
-  outline: none;
-  border-color: #1a73e8;
-  box-shadow: 0 0 0 3px rgba(26,115,232,.15);
+.form-actions {
+    margin-top: 2rem;
 }
-

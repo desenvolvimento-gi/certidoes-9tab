@@ -1,1 +1,0 @@
-// Comunicação com o backend Apps Script

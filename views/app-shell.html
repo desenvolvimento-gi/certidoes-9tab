@@ -1,0 +1,38 @@
+<section id="login-section" class="card">
+  <h1 class="card-title">Solicitação de Certidões</h1>
+  <p>Bem-vindo ao sistema de solicitação de certidões.</p>
+
+  <button id="google-login-button" class="primary-button" type="button">
+    Entrar com Google
+  </button>
+</section>
+
+<section id="denied-section" class="card is-hidden">
+  <h1 class="card-title">Acesso não autorizado</h1>
+  <p>Seu usuário não possui permissão para acessar este formulário.</p>
+</section>
+
+<section id="authenticated-section" class="workspace is-hidden">
+  <header class="workspace-header">
+    <div>
+      <h1>Solicitação de Certidões</h1>
+      <p id="user-info"></p>
+    </div>
+  </header>
+
+  <section class="workspace-content">
+    <nav class="tabs">
+      <button class="tab-button is-active" type="button" data-tab="request-panel">Solicitar</button>
+      <button class="tab-button" type="button" data-tab="query-panel">Consultar</button>
+    </nav>
+
+    <section id="request-panel" class="tab-panel">
+      <div id="request-form-container"></div>
+    </section>
+
+    <section id="query-panel" class="tab-panel is-hidden">
+      <h2>Consultar solicitações</h2>
+      <p>A consulta de status será construída aqui.</p>
+    </section>
+  </section>
+</section>

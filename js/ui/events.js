@@ -1,12 +1,13 @@
 function registerLoginEvents() {
   DOM.googleLoginButton.addEventListener("click", () => {
-          const fakeUser = {
-              name: "William",
-              email: "william@email.com"
-          };
-          showAuthenticated(fakeUser);
-          showTab("request-panel");
-      });
+    const fakeUser = {
+      name: "William",
+      email: "william@email.com"
+    };
+
+    showAuthenticated(fakeUser);
+    showTab("request-panel");
+  });
 }
 
 function registerTabEvents() {
@@ -29,4 +30,10 @@ function registerFormEvents() {
   DOM.civilType.addEventListener("change", showCivilBlock);
 
   DOM.addPropertyItemButton.addEventListener("click", addPropertyItem);
+}
+
+function registerEvents() {
+  registerLoginEvents();
+  registerTabEvents();
+  registerFormEvents();
 }

@@ -1,0 +1,1 @@
+// Futuras validações reutilizáveis.

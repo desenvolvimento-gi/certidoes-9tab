@@ -1,0 +1,48 @@
+.app {
+  min-height: 100vh;
+  padding: 12vh 16px 32px;
+}
+
+#app-root {
+  width: 100%;
+}
+
+.workspace {
+  width: min(1100px, 100%);
+  margin: 0 auto;
+}
+
+.workspace-header {
+  margin-bottom: 1rem;
+  padding: 1.25rem 1.5rem;
+  background: var(--surface);
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+}
+
+.workspace-header h1 {
+  margin-bottom: 0.25rem;
+}
+
+.workspace-header p {
+  margin-bottom: 0;
+  color: var(--muted);
+}
+
+.workspace-content {
+  padding: 1.5rem;
+  background: var(--surface);
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+}
+
+@media (max-width: 640px) {
+  .app {
+    padding: 24px 12px;
+  }
+
+  .workspace-content,
+  .workspace-header {
+    padding: 1rem;
+  }
+}
