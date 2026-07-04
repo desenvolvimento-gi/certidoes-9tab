@@ -1,11 +1,16 @@
 function showLogin() {
-    console.log("Mostrar tela de login");
+  loginSection.classList.remove("is-hidden");
+  deniedSection.classList.add("is-hidden");
+  dashboardSection.classList.add("is-hidden");
 }
 
 function showDenied() {
-    console.log("Mostrar tela de acesso negado");
+  loginSection.classList.add("is-hidden");
+  deniedSection.classList.remove("is-hidden");
+  dashboardSection.classList.add("is-hidden");
 }
 
 function showDashboard() {
-    console.log("Mostrar dashboard");
+    loginSection.classList.add("is-hidden");
+    dashboardSection.classList.remove("is-hidden");
 }

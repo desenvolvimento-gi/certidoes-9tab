@@ -1,1 +1,6 @@
-console.log("Aplicação Certidões 9tab iniciada.");
+function initializeApplication() {
+  showLogin();
+  registerLoginEvents();
+}
+
+initializeApplication();
