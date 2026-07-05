@@ -116,3 +116,25 @@
 .remove-item-button:hover {
   background: #fecaca;
 }
+
+/* Toast */
+.toast {
+  position: fixed;
+  top: 24px;
+  right: 24px;
+  min-width: 280px;
+  max-width: 420px;
+  padding: 16px 18px;
+  color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, .25);
+  z-index: 9999;
+}
+
+.toast--success {
+  background: #166534;
+}
+
+.toast--error {
+  background: #991b1b;
+}

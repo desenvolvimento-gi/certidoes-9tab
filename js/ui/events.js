@@ -30,6 +30,26 @@ function registerFormEvents() {
   DOM.civilType.addEventListener("change", showCivilBlock);
 
   DOM.addPropertyItemButton.addEventListener("click", addPropertyItem);
+
+  DOM.requestForm.addEventListener("submit", handleRequestSubmit);
+
+  DOM.requestForm.addEventListener("input", (event) => {
+    if (event.target.matches("[data-only-numbers]")) {
+      applyOnlyNumbersMask(event.target);
+    }
+  });
+
+  DOM.propertyItems.addEventListener("change", (event) => {
+    if (event.target.matches(".imovelTipo")) {
+      updatePropertyItem(event.target);
+    }
+  });
+
+  DOM.propertyItems.addEventListener("click", (event) => {
+    if (event.target.matches(".remove-item-button")) {
+      removePropertyItem(event.target);
+    }
+  });
 }
 
 function registerEvents() {

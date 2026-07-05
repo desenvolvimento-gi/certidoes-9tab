@@ -108,3 +108,43 @@
 .form-actions {
   margin-top: 2rem;
 }
+
+/* Dynamic property items */
+.item {
+  margin-top: 1.25rem;
+  padding: 1.25rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  background: #fafafa;
+}
+
+.item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.item-title {
+  margin: 0;
+  font-size: 1rem;
+  color: #374151;
+}
+
+.remove-item-button {
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  border: none;
+  border-radius: 999px;
+  background: #fee2e2;
+  color: #991b1b;
+  font-size: 1.25rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.remove-item-button:hover {
+  background: #fecaca;
+}
