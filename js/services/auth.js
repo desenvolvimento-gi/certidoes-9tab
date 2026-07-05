@@ -48,26 +48,46 @@ function isLocallyAuthorized(user) {
     .includes(String(user.email).trim().toLowerCase());
 }
 
-function handleGoogleCredentialResponse(response) {
+async function handleGoogleCredentialResponse(response) {
   try {
     if (!response || !response.credential) {
       throw new Error("O Google não retornou uma credencial válida.");
     }
 
-    const user = buildUserFromGoogleCredential(response.credential);
+    if (DOM.loginStatus) {
+      DOM.loginStatus.textContent = "Verificando autorização...";
+    }
+
+    const localUser = buildUserFromGoogleCredential(response.credential);
+
+    const accessResult = await verifyAccess(response.credential);
+
+    const user = accessResult.user || localUser;
+
+    if (!accessResult.authorized) {
+      clearSession();
+      showDenied(user);
+
+      if (DOM.loginStatus) {
+        DOM.loginStatus.textContent = "";
+      }
+
+      return;
+    }
 
     setCurrentUser(user);
     setIdToken(response.credential);
 
-    if (!isLocallyAuthorized(user)) {
-      showDenied(user);
-      return;
+    if (DOM.loginStatus) {
+      DOM.loginStatus.textContent = "";
     }
 
     showAuthenticated(user);
     showTab("request-panel");
   } catch (error) {
     console.error("Erro no login Google:", error);
+
+    clearSession();
 
     if (DOM.loginStatus) {
       DOM.loginStatus.textContent = error.message || "Erro ao autenticar com Google.";

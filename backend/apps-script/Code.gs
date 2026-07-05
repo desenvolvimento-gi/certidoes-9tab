@@ -9,11 +9,41 @@ const GOOGLE_CLIENT_ID = "774514418031-s0pe6oe5vsa7mbbbfc906r4l71mbhg49.apps.goo
 const REQUIRE_VALID_GOOGLE_TOKEN = true;
 const REQUIRE_AUTHORIZED_EMAIL = true;
 
-function doGet() {
+function doGet(e) {
+  const action = e && e.parameter ? e.parameter.action : "";
+
+  if (action === "verifyAccess") {
+    return handleVerifyAccess(e);
+  }
+
   return jsonResponse({
     ok: true,
     message: "API de Solicitação de Certidões ativa."
   });
+}
+
+function handleVerifyAccess(e) {
+  const callback = e.parameter.callback || "";
+  const idToken = e.parameter.idToken || "";
+
+  try {
+    const user = verifyGoogleIdToken(idToken);
+    const authorized = usuarioAutorizado(user.email);
+
+    return jsonpResponse(callback, {
+      ok: true,
+      authorized,
+      user
+    });
+  } catch (error) {
+    console.error(error);
+
+    return jsonpResponse(callback, {
+      ok: false,
+      authorized: false,
+      message: error.message || "Erro ao verificar autorização."
+    });
+  }
 }
 
 function doPost(e) {
@@ -115,6 +145,19 @@ function jsonResponse(payload) {
   return ContentService
     .createTextOutput(JSON.stringify(payload))
     .setMimeType(ContentService.MimeType.JSON);
+}
+
+function jsonpResponse(callback, payload) {
+  if (!/^[A-Za-z_$][0-9A-Za-z_$]*(\.[A-Za-z_$][0-9A-Za-z_$]*)*$/.test(callback)) {
+    return jsonResponse({
+      ok: false,
+      message: "Callback JSONP inválido."
+    });
+  }
+
+  return ContentService
+    .createTextOutput(`${callback}(${JSON.stringify(payload)});`)
+    .setMimeType(ContentService.MimeType.JAVASCRIPT);
 }
 
 function getSpreadsheet() {

@@ -8,6 +8,60 @@ function getAppsScriptUrl() {
   return url;
 }
 
+
+function verifyAccess(idToken) {
+  if (!idToken) {
+    return Promise.reject(new Error("Token Google não recebido."));
+  }
+
+  return new Promise((resolve, reject) => {
+    const callbackName = `handleAccessVerification_${Date.now()}_${Math.random()
+      .toString(36)
+      .slice(2)}`;
+
+    const script = document.createElement("script");
+    const url = new URL(getAppsScriptUrl());
+
+    url.searchParams.set("action", "verifyAccess");
+    url.searchParams.set("idToken", idToken);
+    url.searchParams.set("callback", callbackName);
+
+    const timeoutId = setTimeout(() => {
+      cleanup();
+      reject(new Error("Tempo esgotado ao verificar autorização."));
+    }, 15000);
+
+    function cleanup() {
+      clearTimeout(timeoutId);
+      delete window[callbackName];
+
+      if (script.parentNode) {
+        script.parentNode.removeChild(script);
+      }
+    }
+
+    window[callbackName] = (result) => {
+      cleanup();
+
+      if (!result || result.ok === false) {
+        reject(new Error(result?.message || "Erro ao verificar autorização."));
+        return;
+      }
+
+      resolve(result);
+    };
+
+    script.onerror = () => {
+      cleanup();
+      reject(new Error("Não foi possível conectar ao Apps Script para verificar autorização."));
+    };
+
+    script.src = url.toString();
+    document.body.appendChild(script);
+  });
+}
+
+
 function buildApiPayload(request) {
   const user = getCurrentUser();
   const idToken = getIdToken();

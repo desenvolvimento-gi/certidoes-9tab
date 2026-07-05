@@ -47,3 +47,37 @@ Por isso, erros de autorização ou validação do backend devem ser conferidos 
 
 - Apps Script > Executions
 - Planilha `Solicitações`
+
+
+## Sprint 5.1 — Autorização no login
+
+Além de validar o token no envio, o backend agora também valida o token durante o login.
+
+Fluxo:
+
+```text
+Google Login
+↓
+Frontend recebe ID token
+↓
+Frontend chama doGet?action=verifyAccess via JSONP
+↓
+Apps Script valida o token
+↓
+Apps Script verifica a aba Emails
+↓
+Frontend libera ou bloqueia o workspace
+```
+
+### Importante
+
+Mantenha o Web App como:
+
+```text
+Executar como: Eu
+Quem pode acessar: Qualquer pessoa
+```
+
+Mesmo com "Qualquer pessoa", o acesso ao sistema continua protegido porque o Apps Script valida o ID token e confere o e-mail na aba `Emails`.
+
+A opção "Qualquer pessoa com Conta do Google" pode impedir que chamadas externas cheguem ao `doGet/doPost`, especialmente em fluxos com `fetch` ou JSONP.
