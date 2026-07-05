@@ -62,11 +62,18 @@ async function handleGoogleCredentialResponse(response) {
 
     const accessResult = await verifyAccess(localUser.email);
 
-    const user = accessResult.user || localUser;
+    // O Google é a fonte da identidade (nome/e-mail/foto/token).
+    // O Apps Script é a fonte da autorização (pode ou não acessar).
+    // Não sobrescrevemos o usuário local com o retorno do Apps Script,
+    // pois o pré-check via JSONP pode retornar apenas o e-mail.
+    const authenticatedUser = {
+      ...localUser,
+      authorized: Boolean(accessResult.authorized)
+    };
 
     if (!accessResult.authorized) {
       clearSession();
-      showDenied(user);
+      showDenied(authenticatedUser);
 
       if (DOM.loginStatus) {
         DOM.loginStatus.textContent = "";
@@ -75,14 +82,14 @@ async function handleGoogleCredentialResponse(response) {
       return;
     }
 
-    setCurrentUser(user);
+    setCurrentUser(authenticatedUser);
     setIdToken(response.credential);
 
     if (DOM.loginStatus) {
       DOM.loginStatus.textContent = "";
     }
 
-    showAuthenticated(user);
+    showAuthenticated(authenticatedUser);
     showTab("request-panel");
   } catch (error) {
     console.error("Erro no login Google:", error);
