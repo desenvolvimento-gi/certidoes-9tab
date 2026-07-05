@@ -9,9 +9,9 @@ function getAppsScriptUrl() {
 }
 
 
-function verifyAccess(idToken) {
-  if (!idToken) {
-    return Promise.reject(new Error("Token Google não recebido."));
+function verifyAccess(userEmail) {
+  if (!userEmail) {
+    return Promise.reject(new Error("E-mail do usuário não recebido."));
   }
 
   return new Promise((resolve, reject) => {
@@ -22,8 +22,12 @@ function verifyAccess(idToken) {
     const script = document.createElement("script");
     const url = new URL(getAppsScriptUrl());
 
+    // Esta verificação é um pré-check de UX.
+    // Ela evita que o usuário avance com uma conta errada.
+    // A segurança definitiva continua acontecendo no doPost,
+    // onde o Apps Script valida o ID token antes de salvar.
     url.searchParams.set("action", "verifyAccess");
-    url.searchParams.set("idToken", idToken);
+    url.searchParams.set("email", userEmail);
     url.searchParams.set("callback", callbackName);
 
     const timeoutId = setTimeout(() => {

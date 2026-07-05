@@ -24,10 +24,26 @@ function doGet(e) {
 
 function handleVerifyAccess(e) {
   const callback = e.parameter.callback || "";
+  const emailParam = String(e.parameter.email || "").trim().toLowerCase();
   const idToken = e.parameter.idToken || "";
 
   try {
-    const user = verifyGoogleIdToken(idToken);
+    // Pré-check de autorização para UX.
+    // Preferimos usar email no JSONP para evitar enviar ID token pela URL.
+    // A validação forte do token continua sendo feita no doPost(e), antes de salvar.
+    let user;
+
+    if (idToken) {
+      user = verifyGoogleIdToken(idToken);
+    } else if (emailParam) {
+      user = {
+        email: emailParam,
+        name: ""
+      };
+    } else {
+      throw new Error("E-mail não recebido para verificar autorização.");
+    }
+
     const authorized = usuarioAutorizado(user.email);
 
     return jsonpResponse(callback, {

@@ -140,8 +140,30 @@
 }
 
 
+
+
+
+/* Login Google */
+.login-auth-panel {
+  margin-top: 1.75rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid #e5e7eb;
+}
+
+.login-auth-title {
+  margin: 0 0 .75rem;
+  font-weight: 600;
+}
+
 .google-signin-button {
-  margin-top: 1.5rem;
+  width: 100%;
+  max-width: 420px;
+}
+
+.login-auth-help {
+  margin: .75rem 0 0;
+  color: #6b7280;
+  font-size: .95rem;
 }
 
 .login-status {

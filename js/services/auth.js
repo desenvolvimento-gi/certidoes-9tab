@@ -60,7 +60,7 @@ async function handleGoogleCredentialResponse(response) {
 
     const localUser = buildUserFromGoogleCredential(response.credential);
 
-    const accessResult = await verifyAccess(response.credential);
+    const accessResult = await verifyAccess(localUser.email);
 
     const user = accessResult.user || localUser;
 
@@ -114,7 +114,7 @@ function initializeGoogleAuth() {
     size: "large",
     text: "signin_with",
     shape: "rectangular",
-    width: 320,
+    width: 420,
     locale: "pt-BR"
   });
 }

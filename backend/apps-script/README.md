@@ -81,3 +81,14 @@ Quem pode acessar: Qualquer pessoa
 Mesmo com "Qualquer pessoa", o acesso ao sistema continua protegido porque o Apps Script valida o ID token e confere o e-mail na aba `Emails`.
 
 A opção "Qualquer pessoa com Conta do Google" pode impedir que chamadas externas cheguem ao `doGet/doPost`, especialmente em fluxos com `fetch` ou JSONP.
+
+
+## Sprint 5.2 - Autorização via JSONP
+
+A verificação inicial de autorização usa JSONP com o e-mail do usuário apenas como pré-check de experiência. A segurança definitiva continua no `doPost(e)`, que valida o ID token do Google antes de salvar a solicitação.
+
+Mantenha o Web App implantado como:
+
+- Executar como: **Eu**
+- Quem pode acessar: **Qualquer pessoa**
+
