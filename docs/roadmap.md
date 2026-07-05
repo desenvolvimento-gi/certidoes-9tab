@@ -19,7 +19,10 @@
 - [x] Autenticação Google
 
 ## Sprint 6
-- [ ] Consulta de solicitações
+- [x] Consulta de solicitações
+
+## Sprint 6.1
+- [x] Configuração centralizada de status
 
 ## Sprint 7
 - [ ] Melhorias de UX

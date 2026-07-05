@@ -20,7 +20,7 @@ function renderEmptyRequests() {
 }
 
 function renderRequestCard(request) {
-  const statusClass = getRequestStatusClass(request.status);
+  const status = getStatusConfig(request.status);
 
   return `
     <article class="request-card">
@@ -30,8 +30,8 @@ function renderRequestCard(request) {
           <p>${escapeHtml(request.tipoCertidao || "-")}</p>
         </div>
 
-        <span class="status-badge ${statusClass}">
-          ${escapeHtml(request.status || "SEM STATUS")}
+        <span class="status-badge ${status.className}">
+          ${escapeHtml(status.label)}
         </span>
       </header>
 
@@ -88,20 +88,6 @@ function renderRequests(requests) {
   }
 
   DOM.requestsList.innerHTML = requests.map(renderRequestCard).join("");
-}
-
-function getRequestStatusClass(status) {
-  const normalizedStatus = String(status || "")
-    .trim()
-    .toLowerCase()
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "");
-
-  if (normalizedStatus.includes("emitida")) return "status-badge--success";
-  if (normalizedStatus.includes("erro") || normalizedStatus.includes("cancel")) return "status-badge--danger";
-  if (normalizedStatus.includes("andamento") || normalizedStatus.includes("pendente")) return "status-badge--warning";
-
-  return "status-badge--neutral";
 }
 
 function escapeHtml(value) {
