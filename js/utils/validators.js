@@ -128,6 +128,91 @@ function runValidations(validations) {
   return validationSuccess();
 }
 
+
+function getFieldMetadata(fieldId) {
+  return CERTIFICATE_FORM_METADATA.fields[fieldId] || null;
+}
+
+function getFieldValue(field) {
+  if (!field) return "";
+  if (field.type === "checkbox") return field.checked;
+  return field.value;
+}
+
+function shouldSkipOptionalBlankValue(value, rule) {
+  return isBlank(value) && rule.name !== "required";
+}
+
+function validateValueWithRule(value, rule, fieldId) {
+  if (shouldSkipOptionalBlankValue(value, rule)) return validationSuccess();
+
+  if (rule.name === "required" && isBlank(value)) {
+    return validationError(rule.message, fieldId);
+  }
+
+  if (rule.name === "digitsOnly" && !/^\d+$/.test(String(value))) {
+    return validationError(rule.message, fieldId);
+  }
+
+  if (rule.name === "digitsBetween" && !hasDigitCountBetween(value, rule.min, rule.max)) {
+    return validationError(rule.message, fieldId);
+  }
+
+  if (rule.name === "cpf" && !cpfValido(value)) {
+    return validationError(rule.message, fieldId);
+  }
+
+  if (rule.name === "cnpj" && !cnpjValido(value)) {
+    return validationError(rule.message, fieldId);
+  }
+
+  if (rule.name === "completeDate" && !isCompleteDate(value)) {
+    return validationError(rule.message, fieldId);
+  }
+
+  if (rule.name === "notFutureDate" && isFutureDate(value)) {
+    return validationError(rule.message, fieldId);
+  }
+
+  return validationSuccess();
+}
+
+function validateFieldByMetadata(field, options = {}) {
+  if (!field || !field.id) return validationSuccess();
+
+  const metadata = getFieldMetadata(field.id);
+  if (!metadata) return validationSuccess();
+
+  const value = getFieldValue(field);
+  const validations = metadata.validators.map((rule) => {
+    if (!options.validateRequired && rule.name === "required" && isBlank(value)) {
+      return validationSuccess();
+    }
+
+    return validateValueWithRule(value, rule, field.id);
+  });
+
+  return runValidations(validations);
+}
+
+function isElementInsideHiddenBlock(element) {
+  return Boolean(element.closest(".is-hidden"));
+}
+
+function validateVisibleMetadataFields() {
+  for (const fieldId of Object.keys(CERTIFICATE_FORM_METADATA.fields)) {
+    const field = document.getElementById(fieldId);
+
+    if (!field || isElementInsideHiddenBlock(field)) continue;
+
+    const validation = validateFieldByMetadata(field, { validateRequired: true });
+
+    if (!validation.valid) return validation;
+  }
+
+  return validationSuccess();
+}
+
 function validateProtocol(request) {
   if (!hasDigitCountBetween(request.protocoloMobi, 4, 6)) {
     return validationError("Informe um protocolo MOBI com 4 a 6 dígitos.", "protocoloMobi");
@@ -278,16 +363,14 @@ function validatePropertyRegistry(request) {
 }
 
 function validateRequest(request) {
+  const metadataValidation = validateVisibleMetadataFields();
+
+  if (!metadataValidation.valid) return metadataValidation;
+
   return runValidations([
-    validateProtocol(request),
-    validateCertificateType(request),
-    request.tipoCertidao === "combo_internet" ? validateComboInternet(request) : validationSuccess(),
-    request.tipoCertidao === "negativa_iptu" ? validateIptu(request) : validationSuccess(),
-    request.tipoCertidao === "registro_civil" ? validateCivil(request) : validationSuccess(),
     request.tipoCertidao === "registro_imovel" ? validatePropertyRegistry(request) : validationSuccess()
   ]);
 }
-
 function getFieldElement(fieldId) {
   return fieldId ? document.getElementById(fieldId) : null;
 }
@@ -351,29 +434,11 @@ function validateFormField(field) {
 
   clearFieldValidationState(field);
 
-  if (field.id === "protocoloMobi" && !isBlank(field.value) && !hasDigitCountBetween(field.value, 4, 6)) {
-    const validation = validationError("O protocolo MOBI deve ter 4 a 6 dígitos.", field.id);
+  const validation = validateFieldByMetadata(field, { validateRequired: false });
+
+  if (!validation.valid) {
     setFieldValidationState(field, validation.message);
-    return validation;
   }
 
-  if (/Cpf$/.test(field.id) && !isBlank(field.value) && !cpfValido(field.value)) {
-    const validation = validationError("CPF inválido.", field.id);
-    setFieldValidationState(field, validation.message);
-    return validation;
-  }
-
-  if (/Cnpj$/.test(field.id) && !isBlank(field.value) && !cnpjValido(field.value)) {
-    const validation = validationError("CNPJ inválido.", field.id);
-    setFieldValidationState(field, validation.message);
-    return validation;
-  }
-
-  if (field.type === "date" && !isBlank(field.value) && isFutureDate(field.value)) {
-    const validation = validationError("A data não pode ser futura.", field.id);
-    setFieldValidationState(field, validation.message);
-    return validation;
-  }
-
-  return validationSuccess();
+  return validation;
 }
