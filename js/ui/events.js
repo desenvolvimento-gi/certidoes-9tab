@@ -39,6 +39,12 @@ function registerFormEvents() {
     }
   });
 
+  DOM.requestForm.addEventListener("focusout", (event) => {
+    if (event.target.matches("input, select")) {
+      validateFormField(event.target);
+    }
+  });
+
   DOM.propertyItems.addEventListener("change", (event) => {
     if (event.target.matches(".imovelTipo")) {
       updatePropertyItem(event.target);

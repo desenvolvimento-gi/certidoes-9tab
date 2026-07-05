@@ -81,12 +81,10 @@ function addPropertyItem() {
     </div>
 
     <div class="form-group boxIncluirOnus is-hidden">
-      <label>Incluir ônus? *</label>
-      <select class="incluirOnus">
-        <option value="">Selecione</option>
-        <option value="SIM">SIM</option>
-        <option value="NÃO">NÃO</option>
-      </select>
+      <label class="checkbox-field">
+        <input class="incluirOnus" type="checkbox">
+        <span>Emitir também a certidão de ônus</span>
+      </label>
     </div>
   `;
 
@@ -131,13 +129,13 @@ function updatePropertyItem(select) {
   const onusTypeBox = item.querySelector(".boxOnusTipo");
   const includeOnusBox = item.querySelector(".boxIncluirOnus");
   const onusTypeSelect = item.querySelector(".onusTipo");
-  const includeOnusSelect = item.querySelector(".incluirOnus");
+  const includeOnusCheckbox = item.querySelector(".incluirOnus");
 
   onusTypeBox.classList.add("is-hidden");
   includeOnusBox.classList.add("is-hidden");
 
   onusTypeSelect.value = "";
-  includeOnusSelect.value = "";
+  includeOnusCheckbox.checked = false;
 
   if (type === "onus") {
     onusTypeBox.classList.remove("is-hidden");
@@ -216,7 +214,7 @@ function buildRequestData() {
       return {
         tipoItem: type === "onus" && onusType ? `onus_${onusType}` : type,
         numeroItem: item.querySelector(".imovelNumero").value.trim(),
-        incluirOnus: item.querySelector(".incluirOnus").value
+        incluirOnus: item.querySelector(".incluirOnus").checked ? "SIM" : "NÃO" 
       };
     });
   }
@@ -227,8 +225,21 @@ function buildRequestData() {
 function handleRequestSubmit(event) {
   event.preventDefault();
 
-  const request = buildRequestData();
+  clearFormValidationState();
 
-  console.log("Solicitação montada:", request);
-  showToast("Solicitação montada no console do navegador.", "success");
+  const request = buildRequestData();
+  const validation = validateRequest(request);
+
+  if (!validation.valid) {
+    if (validation.fieldId) {
+      markFieldAsInvalid(validation.fieldId, validation.message);
+      focusField(validation.fieldId);
+    }
+
+    showToast(validation.message, "error");
+    return;
+  }
+
+  console.log("Solicitação validada:", request);
+  showToast("Solicitação validada e montada no console do navegador.", "success");
 }

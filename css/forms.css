@@ -148,3 +148,37 @@
 .remove-item-button:hover {
   background: #fecaca;
 }
+
+/* ======================================================
+   Validação
+====================================================== */
+
+.form-group.has-error input,
+.form-group.has-error select {
+  border-color: var(--error);
+  box-shadow: 0 0 0 3px rgba(153, 27, 27, 0.12);
+}
+
+.field-error {
+  margin: 0.4rem 0 0;
+  color: var(--error);
+  font-size: 0.875rem;
+}
+
+/* ======================================================
+   Checkbox
+====================================================== */
+
+.checkbox-field {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.checkbox-field input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--primary);
+}
