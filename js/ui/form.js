@@ -222,8 +222,34 @@ function buildRequestData() {
   return request;
 }
 
-function handleRequestSubmit(event) {
+function resetRequestForm() {
+  DOM.requestForm.reset();
+  clearFormValidationState();
+
+  DOM.formSections.forEach((section) => {
+    section.classList.add("is-hidden");
+  });
+
+  DOM.civilBlocks.forEach((block) => {
+    block.classList.add("is-hidden");
+  });
+
+  DOM.propertyItems.innerHTML = "";
+}
+
+function setSubmitButtonState(isLoading) {
+  const submitButton = DOM.requestForm.querySelector('[type="submit"]');
+
+  if (!submitButton) return;
+
+  submitButton.disabled = isLoading;
+  submitButton.textContent = isLoading ? "Enviando..." : "Enviar solicitação";
+}
+
+async function handleRequestSubmit(event) {
   event.preventDefault();
+
+  if (isSubmitting()) return;
 
   clearFormValidationState();
 
@@ -240,6 +266,23 @@ function handleRequestSubmit(event) {
     return;
   }
 
-  console.log("Solicitação validada:", request);
-  showToast("Solicitação validada e montada no console do navegador.", "success");
+  try {
+    setSubmitting(true);
+    setSubmitButtonState(true);
+
+    console.log("Enviando solicitação:", request);
+
+    const result = await submitRequest(request);
+
+    console.log("Resposta da API:", result);
+    showToast(result.message || "Solicitação enviada com sucesso.", "success");
+
+    resetRequestForm();
+  } catch (error) {
+    console.error("Erro ao enviar solicitação:", error);
+    showToast(error.message || "Erro ao enviar solicitação.", "error");
+  } finally {
+    setSubmitting(false);
+    setSubmitButtonState(false);
+  }
 }

@@ -5,6 +5,7 @@ function registerLoginEvents() {
       email: "william@email.com"
     };
 
+    setCurrentUser(fakeUser);
     showAuthenticated(fakeUser);
     showTab("request-panel");
   });
