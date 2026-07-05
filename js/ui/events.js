@@ -1,14 +1,5 @@
 function registerLoginEvents() {
-  DOM.googleLoginButton.addEventListener("click", () => {
-    const fakeUser = {
-      name: "William",
-      email: "william@email.com"
-    };
-
-    setCurrentUser(fakeUser);
-    showAuthenticated(fakeUser);
-    showTab("request-panel");
-  });
+  // O botão de login é renderizado e controlado pelo Google Identity Services.
 }
 
 function registerTabEvents() {

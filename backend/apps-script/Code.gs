@@ -2,10 +2,12 @@ const SPREADSHEET_ID = ""; // Se o script não estiver vinculado à planilha, in
 const SHEET_NAME_REQUESTS = "Solicitações";
 const SHEET_NAME_EMAILS = "Emails";
 
-// Sprint 4: enquanto o login Google real não estiver integrado,
-// mantenha false para aceitar o e-mail simulado enviado pelo frontend.
-// Depois da Sprint de autenticação, trocar para true.
-const REQUIRE_AUTHORIZED_EMAIL = false;
+// Cole aqui o mesmo Client ID usado no frontend.
+const GOOGLE_CLIENT_ID = "774514418031-s0pe6oe5vsa7mbbbfc906r4l71mbhg49.apps.googleusercontent.com";
+
+// Sprint 5: valida o ID token no backend e verifica autorização na aba Emails.
+const REQUIRE_VALID_GOOGLE_TOKEN = true;
+const REQUIRE_AUTHORIZED_EMAIL = true;
 
 function doGet() {
   return jsonResponse({
@@ -23,7 +25,8 @@ function doPost(e) {
       throw new Error("Payload inválido: request não encontrado.");
     }
 
-    const email = String(payload.userEmail || "").trim().toLowerCase();
+    const authUser = resolveAuthenticatedUser(payload);
+    const email = String(authUser.email || "").trim().toLowerCase();
 
     if (REQUIRE_AUTHORIZED_EMAIL && !usuarioAutorizado(email)) {
       throw new Error("Usuário não autorizado a enviar solicitações.");
@@ -31,7 +34,7 @@ function doPost(e) {
 
     salvarSolicitacao(request, {
       email,
-      userName: payload.userName || "",
+      userName: authUser.name || "",
       clientTimestamp: payload.clientTimestamp || "",
       source: payload.source || ""
     });
@@ -56,6 +59,56 @@ function parsePayload(e) {
   }
 
   return JSON.parse(e.postData.contents);
+}
+
+function resolveAuthenticatedUser(payload) {
+  if (!REQUIRE_VALID_GOOGLE_TOKEN) {
+    return {
+      email: String(payload.userEmail || "").trim().toLowerCase(),
+      name: payload.userName || ""
+    };
+  }
+
+  return verifyGoogleIdToken(payload.idToken);
+}
+
+function verifyGoogleIdToken(idToken) {
+  if (!idToken) {
+    throw new Error("Token Google não recebido.");
+  }
+
+  if (!GOOGLE_CLIENT_ID || GOOGLE_CLIENT_ID === "COLE_AQUI_O_CLIENT_ID_DO_GOOGLE") {
+    throw new Error("Configure GOOGLE_CLIENT_ID no Code.gs.");
+  }
+
+  const url = "https://oauth2.googleapis.com/tokeninfo?id_token=" + encodeURIComponent(idToken);
+  const response = UrlFetchApp.fetch(url, {
+    method: "get",
+    muteHttpExceptions: true
+  });
+
+  if (response.getResponseCode() !== 200) {
+    throw new Error("Token Google inválido ou expirado.");
+  }
+
+  const tokenInfo = JSON.parse(response.getContentText());
+
+  if (tokenInfo.aud !== GOOGLE_CLIENT_ID) {
+    throw new Error("Token Google emitido para outro client_id.");
+  }
+
+  if (String(tokenInfo.email_verified) !== "true") {
+    throw new Error("E-mail Google não verificado.");
+  }
+
+  if (!tokenInfo.email) {
+    throw new Error("Token Google sem e-mail.");
+  }
+
+  return {
+    email: String(tokenInfo.email).trim().toLowerCase(),
+    name: tokenInfo.name || ""
+  };
 }
 
 function jsonResponse(payload) {

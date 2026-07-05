@@ -10,10 +10,16 @@ function getAppsScriptUrl() {
 
 function buildApiPayload(request) {
   const user = getCurrentUser();
+  const idToken = getIdToken();
+
+  if (!user || !idToken) {
+    throw new Error("Faça login com Google antes de enviar a solicitação.");
+  }
 
   return {
-    userEmail: user ? user.email : "",
-    userName: user ? user.name : "",
+    idToken,
+    userEmail: user.email || "",
+    userName: user.name || "",
     clientTimestamp: new Date().toISOString(),
     source: "certidoes-9tab-web",
     request

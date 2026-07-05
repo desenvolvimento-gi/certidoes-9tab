@@ -2,14 +2,13 @@
   <h1 class="card-title">Solicitação de Certidões</h1>
   <p>Bem-vindo ao sistema de solicitação de certidões.</p>
 
-  <button id="google-login-button" class="primary-button" type="button">
-    Entrar com Google
-  </button>
+  <div id="google-signin-button" class="google-signin-button"></div>
+  <p id="login-status" class="login-status"></p>
 </section>
 
 <section id="denied-section" class="card is-hidden">
   <h1 class="card-title">Acesso não autorizado</h1>
-  <p>Seu usuário não possui permissão para acessar este formulário.</p>
+  <p id="denied-message">Seu usuário não possui permissão para acessar este formulário.</p>
 </section>
 
 <section id="authenticated-section" class="workspace is-hidden">

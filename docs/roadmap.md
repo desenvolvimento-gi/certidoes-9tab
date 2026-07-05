@@ -13,7 +13,7 @@
 - [x] Metadata Engine
 
 ## Sprint 4
-- [ ] Integração com Apps Script
+- [x] Integração com Apps Script
 
 ## Sprint 5
 - [ ] Autenticação Google

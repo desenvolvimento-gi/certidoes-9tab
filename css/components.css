@@ -138,3 +138,14 @@
 .toast--error {
   background: #991b1b;
 }
+
+
+.google-signin-button {
+  margin-top: 1.5rem;
+}
+
+.login-status {
+  margin-top: 1rem;
+  color: #6b7280;
+  font-size: .95rem;
+}

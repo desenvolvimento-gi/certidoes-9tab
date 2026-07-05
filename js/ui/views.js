@@ -4,10 +4,16 @@ function showLogin() {
   DOM.authenticatedSection.classList.add("is-hidden");
 }
 
-function showDenied() {
+function showDenied(user) {
   DOM.loginSection.classList.add("is-hidden");
   DOM.deniedSection.classList.remove("is-hidden");
   DOM.authenticatedSection.classList.add("is-hidden");
+
+  if (DOM.deniedMessage) {
+    const email = user && user.email ? ` E-mail identificado: ${user.email}.` : "";
+    DOM.deniedMessage.textContent =
+      `Seu usuário não possui permissão para acessar este formulário.${email}`;
+  }
 }
 
 function showAuthenticated(user) {

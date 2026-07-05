@@ -1,19 +1,49 @@
-# Apps Script Backend
+# Backend Apps Script
 
-## Como publicar
+## Sprint 5 — Login Google
 
-1. Crie ou abra o projeto Apps Script vinculado à planilha.
-2. Copie o conteúdo de `Code.gs` para o Apps Script.
-3. Se o script não estiver vinculado à planilha, preencha `SPREADSHEET_ID`.
-4. Faça o deploy como Web App.
-5. Em "Quem tem acesso", use a opção adequada para teste.
-6. Copie a URL terminada em `/exec`.
-7. Cole a URL em `js/config/constants.js` na chave `APPS_SCRIPT_URL`.
+Este backend recebe solicitações do frontend, valida o ID token do Google e grava os dados na aba `Solicitações`.
+
+## Configuração obrigatória
+
+No `Code.gs`, configure:
+
+```js
+const GOOGLE_CLIENT_ID = "SEU_CLIENT_ID.apps.googleusercontent.com";
+```
+
+Use exatamente o mesmo Client ID configurado no frontend em:
+
+```js
+APP_CONFIG.GOOGLE_CLIENT_ID
+```
+
+## Deploy
+
+No Apps Script:
+
+1. Implantar > Gerenciar implantações.
+2. Editar implantação do Web App.
+3. Executar como: **Eu**.
+4. Quem pode acessar: **Qualquer pessoa**.
+5. Implantar.
+6. Copiar a URL `/exec`.
+7. Colar em `APP_CONFIG.APPS_SCRIPT_URL`.
+
+## Abas esperadas
+
+- `Solicitações`
+- `Emails`
+
+A aba `Emails` deve ter a lista de e-mails autorizados na coluna A, a partir da linha 2.
 
 ## Observação sobre CORS
 
-Nesta sprint o frontend usa `APPS_SCRIPT_FETCH_MODE: "no-cors"`.
+O frontend usa `mode: "no-cors"` para enviar dados ao Apps Script.
 
-Isso permite enviar dados do GitHub Pages/Live Server para o Apps Script sem travar por CORS, mas o navegador não consegue ler a resposta real do servidor.
+Consequência: o envio chega ao backend, mas o navegador não consegue ler a resposta real do servidor.
 
-Por isso, nesta etapa a confirmação no frontend é otimista. Depois da autenticação, podemos revisar a estratégia de API.
+Por isso, erros de autorização ou validação do backend devem ser conferidos em:
+
+- Apps Script > Executions
+- Planilha `Solicitações`

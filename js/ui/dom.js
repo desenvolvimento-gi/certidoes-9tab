@@ -6,7 +6,9 @@ function initializeDOM() {
     deniedSection: document.getElementById("denied-section"),
     authenticatedSection: document.getElementById("authenticated-section"),
 
-    googleLoginButton: document.getElementById("google-login-button"),
+    googleSignInButton: document.getElementById("google-signin-button"),
+    loginStatus: document.getElementById("login-status"),
+    deniedMessage: document.getElementById("denied-message"),
     userInfo: document.getElementById("user-info"),
 
     tabButtons: document.querySelectorAll(".tab-button"),

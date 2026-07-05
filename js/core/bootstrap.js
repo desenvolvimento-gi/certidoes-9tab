@@ -5,6 +5,7 @@ async function bootstrap() {
 
   initializeDOM();
   registerEvents();
+  initializeGoogleAuth();
 
   showLogin();
   showTab("request-panel");
