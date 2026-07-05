@@ -36,6 +36,36 @@
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
 }
 
+
+.user-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.user-stat-card {
+  min-width: 150px;
+  padding: 0.9rem 1rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  background: #f8fafc;
+}
+
+.user-stat-label {
+  display: block;
+  margin-bottom: 0.25rem;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+.user-stat-card strong {
+  display: block;
+  color: var(--text);
+  font-size: 1.5rem;
+  line-height: 1;
+}
+
 @media (max-width: 640px) {
   .app {
     padding: 24px 12px;

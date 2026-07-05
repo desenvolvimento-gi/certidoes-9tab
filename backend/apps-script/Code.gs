@@ -49,11 +49,12 @@ function handleVerifyAccess(e) {
       throw new Error("E-mail não recebido para verificar autorização.");
     }
 
-    const authorized = usuarioAutorizado(user.email);
+    const accessInfo = getAuthorizedUserInfo(user.email);
 
     return jsonpResponse(callback, {
       ok: true,
-      authorized,
+      authorized: accessInfo.authorized,
+      stats: accessInfo.stats,
       user
     });
   } catch (error) {
@@ -240,21 +241,71 @@ function getSheet(name) {
 }
 
 function usuarioAutorizado(email) {
-  if (!email) return false;
+  return getAuthorizedUserInfo(email).authorized;
+}
+
+function getAuthorizedUserInfo(email) {
+  if (!email) {
+    return {
+      authorized: false,
+      stats: emptyUserStats()
+    };
+  }
 
   const sheet = getSheet(SHEET_NAME_EMAILS);
   const lastRow = sheet.getLastRow();
+  const lastColumn = sheet.getLastColumn();
 
-  if (lastRow < 2) return false;
+  if (lastRow < 2 || lastColumn === 0) {
+    return {
+      authorized: false,
+      stats: emptyUserStats()
+    };
+  }
 
-  const emails = sheet
-    .getRange(2, 1, lastRow - 1, 1)
-    .getValues()
-    .flat()
-    .map((value) => String(value).trim().toLowerCase())
-    .filter(Boolean);
+  const values = sheet
+    .getRange(1, 1, lastRow, lastColumn)
+    .getDisplayValues();
 
-  return emails.includes(String(email).trim().toLowerCase());
+  const headers = values[0].map((header) => String(header).trim());
+  const index = createHeaderIndex(headers);
+
+  const emailColumnIndex = index["Email"] !== undefined ? index["Email"] : 0;
+  const normalizedEmail = String(email).trim().toLowerCase();
+
+  const row = values
+    .slice(1)
+    .find((currentRow) => String(currentRow[emailColumnIndex] || "").trim().toLowerCase() === normalizedEmail);
+
+  if (!row) {
+    return {
+      authorized: false,
+      stats: emptyUserStats()
+    };
+  }
+
+  return {
+    authorized: true,
+    stats: {
+      solicitadas: parseIntegerCell(getCell(row, index, "Solicitadas")),
+      emitidas: parseIntegerCell(getCell(row, index, "Emitidas"))
+    }
+  };
+}
+
+function emptyUserStats() {
+  return {
+    solicitadas: 0,
+    emitidas: 0
+  };
+}
+
+function parseIntegerCell(value) {
+  const digits = String(value || "").replace(/\D/g, "");
+
+  if (!digits) return 0;
+
+  return Number(digits);
 }
 
 

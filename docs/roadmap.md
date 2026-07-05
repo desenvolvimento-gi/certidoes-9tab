@@ -24,6 +24,9 @@
 ## Sprint 6.1
 - [x] Configuração centralizada de status
 
+## Sprint 6.2
+- [x] Indicadores do usuário no cabeçalho
+
 ## Sprint 7
 - [ ] Melhorias de UX
 

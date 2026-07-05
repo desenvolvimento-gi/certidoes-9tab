@@ -68,7 +68,11 @@ async function handleGoogleCredentialResponse(response) {
     // pois o pré-check via JSONP pode retornar apenas o e-mail.
     const authenticatedUser = {
       ...localUser,
-      authorized: Boolean(accessResult.authorized)
+      authorized: Boolean(accessResult.authorized),
+      stats: accessResult.stats || {
+        solicitadas: 0,
+        emitidas: 0
+      }
     };
 
     if (!accessResult.authorized) {

@@ -10,6 +10,9 @@ function initializeDOM() {
     loginStatus: document.getElementById("login-status"),
     deniedMessage: document.getElementById("denied-message"),
     userInfo: document.getElementById("user-info"),
+    userStats: document.getElementById("user-stats"),
+    userStatRequested: document.getElementById("user-stat-requested"),
+    userStatIssued: document.getElementById("user-stat-issued"),
 
     tabButtons: document.querySelectorAll(".tab-button"),
     tabPanels: document.querySelectorAll(".tab-panel"),
