@@ -18,12 +18,6 @@
 ## Sprint 5
 - [x] Autenticação Google
 
-### Sprint 5.1
-- [x] Autorização do usuário
-
-### Sprint 5.2
-- [x] Autorização JSONP
-
 ## Sprint 6
 - [ ] Consulta de solicitações
 

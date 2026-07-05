@@ -8,31 +8,27 @@ function getAppsScriptUrl() {
   return url;
 }
 
-
-function verifyAccess(userEmail) {
-  if (!userEmail) {
-    return Promise.reject(new Error("E-mail do usuário não recebido."));
-  }
-
+function callAppsScriptJsonp(action, params = {}) {
   return new Promise((resolve, reject) => {
-    const callbackName = `handleAccessVerification_${Date.now()}_${Math.random()
+    const callbackName = `appsScriptCallback_${action}_${Date.now()}_${Math.random()
       .toString(36)
       .slice(2)}`;
 
     const script = document.createElement("script");
     const url = new URL(getAppsScriptUrl());
 
-    // Esta verificação é um pré-check de UX.
-    // Ela evita que o usuário avance com uma conta errada.
-    // A segurança definitiva continua acontecendo no doPost,
-    // onde o Apps Script valida o ID token antes de salvar.
-    url.searchParams.set("action", "verifyAccess");
-    url.searchParams.set("email", userEmail);
+    url.searchParams.set("action", action);
     url.searchParams.set("callback", callbackName);
+
+    Object.entries(params).forEach(([key, value]) => {
+      if (value !== undefined && value !== null && value !== "") {
+        url.searchParams.set(key, value);
+      }
+    });
 
     const timeoutId = setTimeout(() => {
       cleanup();
-      reject(new Error("Tempo esgotado ao verificar autorização."));
+      reject(new Error("Tempo esgotado ao conectar com o Apps Script."));
     }, 15000);
 
     function cleanup() {
@@ -48,7 +44,7 @@ function verifyAccess(userEmail) {
       cleanup();
 
       if (!result || result.ok === false) {
-        reject(new Error(result?.message || "Erro ao verificar autorização."));
+        reject(new Error(result?.message || "Erro ao comunicar com o Apps Script."));
         return;
       }
 
@@ -57,7 +53,7 @@ function verifyAccess(userEmail) {
 
     script.onerror = () => {
       cleanup();
-      reject(new Error("Não foi possível conectar ao Apps Script para verificar autorização."));
+      reject(new Error("Não foi possível conectar ao Apps Script."));
     };
 
     script.src = url.toString();
@@ -65,6 +61,33 @@ function verifyAccess(userEmail) {
   });
 }
 
+function verifyAccess(userEmail) {
+  if (!userEmail) {
+    return Promise.reject(new Error("E-mail do usuário não recebido."));
+  }
+
+  // Esta verificação é um pré-check de UX.
+  // Ela evita que o usuário avance com uma conta errada.
+  // A segurança definitiva continua acontecendo no doPost,
+  // onde o Apps Script valida o ID token antes de salvar.
+  return callAppsScriptJsonp("verifyAccess", {
+    email: userEmail
+  });
+}
+
+function listRequests() {
+  const idToken = getIdToken();
+
+  if (!idToken) {
+    return Promise.reject(new Error("Faça login com Google antes de consultar solicitações."));
+  }
+
+  // Para consulta, enviamos o ID token no JSONP para o backend validar
+  // a identidade antes de retornar qualquer dado.
+  return callAppsScriptJsonp("listRequests", {
+    idToken
+  });
+}
 
 function buildApiPayload(request) {
   const user = getCurrentUser();

@@ -5,7 +5,13 @@ function registerLoginEvents() {
 function registerTabEvents() {
   DOM.tabButtons.forEach((button) => {
     button.addEventListener("click", () => {
-      showTab(button.dataset.tab);
+      const panelId = button.dataset.tab;
+
+      showTab(panelId);
+
+      if (panelId === "query-panel") {
+        loadUserRequests();
+      }
     });
   });
 }
@@ -24,6 +30,12 @@ function registerFormEvents() {
   DOM.addPropertyItemButton.addEventListener("click", addPropertyItem);
 
   DOM.requestForm.addEventListener("submit", handleRequestSubmit);
+
+  if (DOM.refreshRequestsButton) {
+    DOM.refreshRequestsButton.addEventListener("click", () => {
+      loadUserRequests({ force: true });
+    });
+  }
 
   DOM.requestForm.addEventListener("input", (event) => {
     if (event.target.matches("[data-only-numbers]")) {

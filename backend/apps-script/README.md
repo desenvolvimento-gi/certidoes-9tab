@@ -92,3 +92,12 @@ Mantenha o Web App implantado como:
 - Executar como: **Eu**
 - Quem pode acessar: **Qualquer pessoa**
 
+
+
+## Sprint 6 — Consulta
+
+A ação `listRequests` lê a aba `Respostas`, valida o `idToken` recebido por JSONP e retorna apenas as linhas em que a coluna `Solicitante` corresponde ao e-mail autenticado.
+
+Cabeçalhos esperados na aba `Respostas`:
+
+`Protocolo`, `Solicitante`, `Tipo de certidão`, `Qual certidão?`, `Data/hora do pedido`, `Status`, `Detalhamento`, `Número do protocolo`, `Número da certidão`, `Data/hora da emissão`, `Data de validade`.

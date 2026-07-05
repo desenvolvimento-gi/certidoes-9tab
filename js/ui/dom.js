@@ -21,6 +21,10 @@ function initializeDOM() {
     civilType: document.getElementById("civilTipo"),
     civilBlocks: document.querySelectorAll(".civil-block"),
     propertyItems: document.getElementById("itensImovel"),
-    addPropertyItemButton: document.getElementById("add-property-item-button")
+    addPropertyItemButton: document.getElementById("add-property-item-button"),
+
+    refreshRequestsButton: document.getElementById("refresh-requests-button"),
+    queryStatus: document.getElementById("query-status"),
+    requestsList: document.getElementById("requests-list")
   };
 }

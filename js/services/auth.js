@@ -89,6 +89,7 @@ async function handleGoogleCredentialResponse(response) {
       DOM.loginStatus.textContent = "";
     }
 
+    resetQueryState();
     showAuthenticated(authenticatedUser);
     showTab("request-panel");
   } catch (error) {

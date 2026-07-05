@@ -1,2 +1,16 @@
-<h2>Consultar solicitações</h2>
-<p>A consulta de status será construída aqui.</p>
+<section class="query-view">
+  <div class="query-header">
+    <div>
+      <h2>Consultar solicitações</h2>
+      <p>Acompanhe as solicitações vinculadas ao seu e-mail.</p>
+    </div>
+
+    <button id="refresh-requests-button" class="secondary-button" type="button">
+      Atualizar
+    </button>
+  </div>
+
+  <p id="query-status" class="query-status"></p>
+
+  <section id="requests-list" class="requests-list" aria-live="polite"></section>
+</section>

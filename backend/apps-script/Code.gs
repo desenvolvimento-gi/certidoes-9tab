@@ -1,6 +1,7 @@
 const SPREADSHEET_ID = ""; // Se o script não estiver vinculado à planilha, informe o ID aqui.
 const SHEET_NAME_REQUESTS = "Solicitações";
 const SHEET_NAME_EMAILS = "Emails";
+const SHEET_NAME_RESPONSES = "Respostas";
 
 // Cole aqui o mesmo Client ID usado no frontend.
 const GOOGLE_CLIENT_ID = "774514418031-s0pe6oe5vsa7mbbbfc906r4l71mbhg49.apps.googleusercontent.com";
@@ -14,6 +15,10 @@ function doGet(e) {
 
   if (action === "verifyAccess") {
     return handleVerifyAccess(e);
+  }
+
+  if (action === "listRequests") {
+    return handleListRequests(e);
   }
 
   return jsonResponse({
@@ -61,6 +66,40 @@ function handleVerifyAccess(e) {
     });
   }
 }
+
+
+function handleListRequests(e) {
+  const callback = e.parameter.callback || "";
+  const idToken = e.parameter.idToken || "";
+
+  try {
+    const user = verifyGoogleIdToken(idToken);
+    const email = String(user.email || "").trim().toLowerCase();
+
+    if (REQUIRE_AUTHORIZED_EMAIL && !usuarioAutorizado(email)) {
+      throw new Error("Usuário não autorizado a consultar solicitações.");
+    }
+
+    const requests = listarSolicitacoesPorEmail(email);
+
+    return jsonpResponse(callback, {
+      ok: true,
+      user: {
+        email,
+        name: user.name || ""
+      },
+      requests
+    });
+  } catch (error) {
+    console.error(error);
+
+    return jsonpResponse(callback, {
+      ok: false,
+      message: error.message || "Erro ao consultar solicitações."
+    });
+  }
+}
+
 
 function doPost(e) {
   try {
@@ -217,6 +256,70 @@ function usuarioAutorizado(email) {
 
   return emails.includes(String(email).trim().toLowerCase());
 }
+
+
+function listarSolicitacoesPorEmail(email) {
+  const sheet = getSheet(SHEET_NAME_RESPONSES);
+  const lastRow = sheet.getLastRow();
+  const lastColumn = sheet.getLastColumn();
+
+  if (lastRow < 2 || lastColumn === 0) {
+    return [];
+  }
+
+  const values = sheet
+    .getRange(1, 1, lastRow, lastColumn)
+    .getDisplayValues();
+
+  const headers = values[0].map((header) => String(header).trim());
+  const rows = values.slice(1);
+
+  const index = createHeaderIndex(headers);
+  const solicitanteIndex = index["Solicitante"];
+
+  if (solicitanteIndex === undefined) {
+    throw new Error('A coluna "Solicitante" não foi encontrada na aba Respostas.');
+  }
+
+  return rows
+    .filter((row) => String(row[solicitanteIndex] || "").trim().toLowerCase() === String(email).trim().toLowerCase())
+    .map((row) => mapResponseRow(row, index))
+    .reverse();
+}
+
+function createHeaderIndex(headers) {
+  return headers.reduce((acc, header, index) => {
+    acc[header] = index;
+    return acc;
+  }, {});
+}
+
+function getCell(row, index, header) {
+  const columnIndex = index[header];
+
+  if (columnIndex === undefined) {
+    return "";
+  }
+
+  return row[columnIndex] || "";
+}
+
+function mapResponseRow(row, index) {
+  return {
+    protocolo: getCell(row, index, "Protocolo"),
+    solicitante: getCell(row, index, "Solicitante"),
+    tipoCertidao: getCell(row, index, "Tipo de certidão"),
+    qualCertidao: getCell(row, index, "Qual certidão?"),
+    dataHoraPedido: getCell(row, index, "Data/hora do pedido"),
+    status: getCell(row, index, "Status"),
+    detalhamento: getCell(row, index, "Detalhamento"),
+    numeroProtocolo: getCell(row, index, "Número do protocolo"),
+    numeroCertidao: getCell(row, index, "Número da certidão"),
+    dataHoraEmissao: getCell(row, index, "Data/hora da emissão"),
+    dataValidade: getCell(row, index, "Data de validade")
+  };
+}
+
 
 function adicionarLinhaTexto(sheet, values) {
   const row = sheet.getLastRow() + 1;
