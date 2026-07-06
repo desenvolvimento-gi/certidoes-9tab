@@ -38,6 +38,13 @@ const CERTIFICATE_FORM_METADATA = {
       ]
     },
 
+    comboRazaoSocial: {
+      label: "Nome (Razão Social)",
+      validators: [
+        { name: "required", message: "Informe o nome ou razão social." }
+      ]
+    },
+
     comboNascimento: {
       label: "Data de nascimento",
       validators: [
@@ -177,6 +184,27 @@ const CERTIFICATE_FORM_METADATA = {
       label: "Termo",
       validators: [
         { name: "digitsOnly", message: "Termo deve conter apenas números." }
+      ]
+    },
+
+    imovelEstado: {
+      label: "Estado",
+      validators: [
+        { name: "required", message: "Selecione o estado." }
+      ]
+    },
+
+    imovelCidade: {
+      label: "Cidade",
+      validators: [
+        { name: "required", message: "Informe a cidade." }
+      ]
+    },
+
+    imovelCartorio: {
+      label: "Cartório",
+      validators: [
+        { name: "required", message: "Informe o cartório." }
       ]
     }
   }

@@ -28,7 +28,7 @@
 - [x] Indicadores do usuário no cabeçalho
 
 ## Sprint 7
-- [ ] Melhorias de UX
+- [x] Melhorias no formulário
 
 ## Sprint 8
 - [ ] Testes

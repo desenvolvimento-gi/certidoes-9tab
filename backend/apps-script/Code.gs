@@ -445,9 +445,9 @@ function salvarRegistroImovel(sheet, dateTime, email, request) {
       "",
       "",
 
-      "",
-      "",
-      "",
+      request.uf || "",
+      request.cidade || "",
+      request.cartorio || "",
 
       "",
       "",

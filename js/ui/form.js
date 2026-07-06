@@ -168,6 +168,7 @@ function buildRequestData() {
 
     if (request.subtipo === "pj") {
       request.cnpj = getValue("comboCnpj");
+      request.nome1 = getValue("comboRazaoSocial");
     }
   }
 
@@ -207,6 +208,10 @@ function buildRequestData() {
   }
 
   if (certificateType === "registro_imovel") {
+    request.uf = getValue("imovelEstado");
+    request.cidade = getValue("imovelCidade");
+    request.cartorio = getValue("imovelCartorio");
+
     request.itens = Array.from(DOM.propertyItems.querySelectorAll(".item-imovel")).map((item) => {
       const type = item.querySelector(".imovelTipo").value;
       const onusType = item.querySelector(".onusTipo").value;
