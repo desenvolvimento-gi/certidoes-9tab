@@ -46,6 +46,7 @@ node_modules/
 
 credentials.json
 token.json
+backend/google-cloud/client_secret_*.json
 
 # ==========================
 # Python (caso utilize)

@@ -125,7 +125,7 @@ async function submitRequest(request) {
   if (mode === "no-cors") {
     return {
       ok: true,
-      message: "Solicitação enviada. Como o modo no-cors está ativo, a resposta do servidor não pode ser lida pelo navegador."
+      message: "Solicitação enviada!"
     };
   }
 
