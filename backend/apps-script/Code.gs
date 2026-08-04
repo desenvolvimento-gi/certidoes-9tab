@@ -111,30 +111,25 @@ function doPost(e) {
       throw new Error("Payload inválido: request não encontrado.");
     }
 
-    const authUser = resolveAuthenticatedUser(payload);
-    const email = String(authUser.email || "").trim().toLowerCase();
+    const user = resolveAuthenticatedUser(payload);
 
-    if (REQUIRE_AUTHORIZED_EMAIL && !usuarioAutorizado(email)) {
+    if (REQUIRE_AUTHORIZED_EMAIL && !usuarioAutorizado(user.email)) {
       throw new Error("Usuário não autorizado a enviar solicitações.");
     }
 
-    salvarSolicitacao(request, {
-      email,
-      userName: authUser.name || "",
-      clientTimestamp: payload.clientTimestamp || "",
-      source: payload.source || ""
-    });
+    salvarSolicitacao(request, user);
 
     return jsonResponse({
       ok: true,
-      message: "Solicitação enviada com sucesso!"
+      message: "Solicitação salva com sucesso!"
     });
+
   } catch (error) {
     console.error(error);
 
     return jsonResponse({
       ok: false,
-      message: error.message || "Erro inesperado ao salvar solicitação."
+      message: error.message || "Erro ao processar solicitação."
     });
   }
 }
@@ -396,68 +391,61 @@ function salvarSolicitacao(request, context) {
 }
 
 function salvarRegistroComum(sheet, dateTime, email, request) {
+  const idExclusivo = "REQ-" + Utilities.getUuid().substring(0, 8).toUpperCase();
+
   adicionarLinhaTexto(sheet, [
-    dateTime,
-    email,
-
-    request.protocoloMobi || "",
-    request.tipoCertidao || "",
-    request.subtipo || "",
-
-    request.cpf || "",
-    request.cnpj || "",
-    request.nome1 || "",
-    request.nome2 || "",
-    request.dataEvento || "",
-
-    request.uf || "",
-    request.cidade || "",
-    request.cartorio || "",
-
-    request.livro || "",
-    request.folha || "",
-    request.termo || "",
-
-    request.indicacaoFiscal || "",
-
-    "",
-    "",
-    ""
+    idExclusivo,                       // Coluna A: id_exclusivo
+    dateTime,                          // Coluna B: data_hora
+    email,                             // Coluna C: email
+    request.protocoloMobi || "",       // Coluna D: protocolo_mobi
+    request.tipoCertidao || "",        // Coluna E: tipo_certidao
+    request.subtipo || "",             // Coluna F: subtipo
+    request.cpf || "",                 // Coluna G: cpf
+    request.cnpj || "",                // Coluna H: cnpj
+    request.nome1 || "",               // Coluna I: nome_1
+    request.nome2 || "",               // Coluna J: nome_2
+    request.dataEvento || "",          // Coluna K: data_evento
+    request.uf || "",                  // Coluna L: uf
+    request.cidade || "",              // Coluna M: cidade
+    request.cartorio || "",            // Coluna N: cartorio
+    request.livro || "",               // Coluna O: livro
+    request.folha || "",               // Coluna P: folha
+    request.termo || "",               // Coluna Q: termo
+    request.indicacaoFiscal || "",     // Coluna R: indicacao_fiscal
+    "",                                // Coluna S: tipo_item
+    "",                                // Coluna T: numero_item
+    ""                                 // Coluna U: incluir_onus
   ]);
 }
 
 function salvarRegistroImovel(sheet, dateTime, email, request) {
-  const items = request.itens || [];
+  const items = (request.itens && request.itens.length > 0) ? request.itens : [{}];
 
   items.forEach((item) => {
+    const idExclusivo = "REQ-" + Utilities.getUuid().substring(0, 8).toUpperCase();
+
     adicionarLinhaTexto(sheet, [
-      dateTime,
-      email,
-
-      request.protocoloMobi || "",
-      request.tipoCertidao || "",
-
-      "",
-
-      "",
-      "",
-      "",
-      "",
-      "",
-
-      request.uf || "",
-      request.cidade || "",
-      request.cartorio || "",
-
-      "",
-      "",
-      "",
-
-      "",
-
-      item.tipoItem || "",
-      item.numeroItem || "",
-      item.incluirOnus || ""
+      idExclusivo,                       // Coluna A: id_exclusivo
+      dateTime,                          // Coluna B: data_hora
+      email,                             // Coluna C: email
+      request.protocoloMobi || "",       // Coluna D: protocolo_mobi
+      request.tipoCertidao || "",        // Coluna E: tipo_certidao
+      "",                                // Coluna F: subtipo
+      "",                                // Coluna G: cpf
+      "",                                // Coluna H: cnpj
+      "",                                // Coluna I: nome_1
+      "",                                // Coluna J: nome_2
+      "",                                // Coluna K: data_evento
+      request.uf || "",                  // Coluna L: uf
+      request.cidade || "",              // Coluna M: cidade
+      request.cartorio || "",            // Coluna N: cartorio
+      "",                                // Coluna O: livro
+      "",                                // Coluna P: folha
+      "",                                // Coluna Q: termo
+      "",                                // Coluna R: indicacao_fiscal
+      item.tipoItem || "",               // Coluna S: tipo_item
+      item.numeroItem || "",             // Coluna T: numero_item
+      item.incluirOnus || ""             // Coluna U: incluir_onus
     ]);
   });
 }
