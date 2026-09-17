@@ -3,6 +3,8 @@ async function bootstrap() {
   await loadView("request-view-container", "request-view");
   await loadView("query-view-container", "query-view");
 
+  await loadCivilRegistryData();
+  
   initializeDOM();
   registerEvents();
   initializeGoogleAuth();

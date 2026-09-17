@@ -27,6 +27,47 @@ function registerFormEvents() {
 
   DOM.civilType.addEventListener("change", showCivilBlock);
 
+  DOM.civilState.addEventListener("change", updateCivilCities);
+
+  DOM.civilCity.addEventListener("input", handleCivilCityInput);
+
+  DOM.civilCity.addEventListener("keydown", (event) => {
+    handleAutocompleteKeydown(
+      event,
+      DOM.civilCity,
+      DOM.civilCityOptions,
+      selectCivilCity
+    );
+  });
+
+  DOM.civilRegistryOffice.addEventListener(
+    "input",
+    handleCivilRegistryOfficeInput
+  );
+
+  DOM.civilRegistryOffice.addEventListener("keydown", (event) => {
+    handleAutocompleteKeydown(
+      event,
+      DOM.civilRegistryOffice,
+      DOM.civilRegistryOfficeOptions,
+      selectCivilRegistryOffice
+    );
+  });
+
+  document.addEventListener("click", (event) => {
+    if (!event.target.closest(".autocomplete")) {
+      clearAutocomplete(
+        DOM.civilCityOptions,
+        DOM.civilCity
+      );
+
+      clearAutocomplete(
+        DOM.civilRegistryOfficeOptions,
+        DOM.civilRegistryOffice
+      );
+    }
+  });
+
   DOM.addPropertyItemButton.addEventListener("click", addPropertyItem);
 
   DOM.requestForm.addEventListener("submit", handleRequestSubmit);

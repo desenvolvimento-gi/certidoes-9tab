@@ -71,7 +71,8 @@
     <div class="form-row form-row--2">
       <div class="form-group">
         <label for="iptuIndicacaoFiscal">Número da indicação fiscal *</label>
-        <input id="iptuIndicacaoFiscal" name="iptuIndicacaoFiscal" maxlength="12" data-only-numbers placeholder="8 a 12 dígitos">
+        <input id="iptuIndicacaoFiscal" name="iptuIndicacaoFiscal" maxlength="12" data-only-numbers
+          placeholder="8 a 12 dígitos">
       </div>
 
       <div class="form-group">
@@ -107,26 +108,60 @@
         <label for="civilEstado">Estado *</label>
         <select id="civilEstado" name="civilEstado">
           <option value="">UF</option>
-          <option>AC</option><option>AL</option><option>AP</option><option>AM</option>
-          <option>BA</option><option>CE</option><option>DF</option><option>ES</option>
-          <option>GO</option><option>MA</option><option>MT</option><option>MS</option>
-          <option>MG</option><option>PA</option><option>PB</option><option>PR</option>
-          <option>PE</option><option>PI</option><option>RJ</option><option>RN</option>
-          <option>RS</option><option>RO</option><option>RR</option><option>SC</option>
-          <option>SP</option><option>SE</option><option>TO</option>
+          <option>AC</option>
+          <option>AL</option>
+          <option>AP</option>
+          <option>AM</option>
+          <option>BA</option>
+          <option>CE</option>
+          <option>DF</option>
+          <option>ES</option>
+          <option>GO</option>
+          <option>MA</option>
+          <option>MT</option>
+          <option>MS</option>
+          <option>MG</option>
+          <option>PA</option>
+          <option>PB</option>
+          <option>PR</option>
+          <option>PE</option>
+          <option>PI</option>
+          <option>RJ</option>
+          <option>RN</option>
+          <option>RS</option>
+          <option>RO</option>
+          <option>RR</option>
+          <option>SC</option>
+          <option>SP</option>
+          <option>SE</option>
+          <option>TO</option>
         </select>
       </div>
 
       <div class="form-group">
         <label for="civilCidade">Cidade *</label>
-        <input id="civilCidade" name="civilCidade">
+
+        <div class="autocomplete">
+          <input id="civilCidade" name="civilCidade" type="text" autocomplete="off" disabled
+            placeholder="Selecione o estado primeiro" aria-autocomplete="list" aria-controls="civilCidadeOptions"
+            aria-expanded="false">
+
+          <div id="civilCidadeOptions" class="autocomplete-options is-hidden" role="listbox"></div>
+        </div>
       </div>
     </div>
 
     <div class="form-row form-row--2">
       <div class="form-group">
         <label for="civilCartorio">Cartório *</label>
-        <input id="civilCartorio" name="civilCartorio">
+
+        <div class="autocomplete">
+          <input id="civilCartorio" name="civilCartorio" type="text" autocomplete="off" disabled
+            placeholder="Selecione uma cidade primeiro" aria-autocomplete="list" aria-controls="civilCartorioOptions"
+            aria-expanded="false">
+
+          <div id="civilCartorioOptions" class="autocomplete-options is-hidden" role="listbox"></div>
+        </div>
       </div>
 
       <div class="form-group">
@@ -217,13 +252,33 @@
         <label for="imovelEstado">Estado *</label>
         <select id="imovelEstado" name="imovelEstado">
           <option value="">UF</option>
-          <option>AC</option><option>AL</option><option>AP</option><option>AM</option>
-          <option>BA</option><option>CE</option><option>DF</option><option>ES</option>
-          <option>GO</option><option>MA</option><option>MT</option><option>MS</option>
-          <option>MG</option><option>PA</option><option>PB</option><option>PR</option>
-          <option>PE</option><option>PI</option><option>RJ</option><option>RN</option>
-          <option>RS</option><option>RO</option><option>RR</option><option>SC</option>
-          <option>SP</option><option>SE</option><option>TO</option>
+          <option>AC</option>
+          <option>AL</option>
+          <option>AP</option>
+          <option>AM</option>
+          <option>BA</option>
+          <option>CE</option>
+          <option>DF</option>
+          <option>ES</option>
+          <option>GO</option>
+          <option>MA</option>
+          <option>MT</option>
+          <option>MS</option>
+          <option>MG</option>
+          <option>PA</option>
+          <option>PB</option>
+          <option>PR</option>
+          <option>PE</option>
+          <option>PI</option>
+          <option>RJ</option>
+          <option>RN</option>
+          <option>RS</option>
+          <option>RO</option>
+          <option>RR</option>
+          <option>SC</option>
+          <option>SP</option>
+          <option>SE</option>
+          <option>TO</option>
         </select>
       </div>
 

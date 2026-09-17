@@ -174,6 +174,27 @@ function validateValueWithRule(value, rule, fieldId) {
     return validationError(rule.message, fieldId);
   }
 
+  if (rule.name === "civilCity") {
+    const uf = document.getElementById("civilEstado")?.value || "";
+
+    if (!uf || !getCivilCities(uf).includes(String(value).trim())) {
+      return validationError(rule.message, fieldId);
+    }
+  }
+
+  if (rule.name === "civilRegistryOffice") {
+    const uf = document.getElementById("civilEstado")?.value || "";
+    const city = document.getElementById("civilCidade")?.value.trim() || "";
+
+    if (
+      !uf ||
+      !city ||
+      !getCivilRegistryOffices(uf, city).includes(String(value).trim())
+    ) {
+      return validationError(rule.message, fieldId);
+    }
+  }
+
   return validationSuccess();
 }
 

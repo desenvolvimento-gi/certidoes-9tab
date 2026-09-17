@@ -93,14 +93,28 @@ const CERTIFICATE_FORM_METADATA = {
     civilCidade: {
       label: "Cidade",
       validators: [
-        { name: "required", message: "Informe a cidade." }
+        {
+          name: "required",
+          message: "Informe a cidade."
+        },
+        {
+          name: "civilCity",
+          message: "Selecione uma cidade válida."
+        }
       ]
     },
 
     civilCartorio: {
       label: "Cartório",
       validators: [
-        { name: "required", message: "Informe o cartório." }
+        {
+          name: "required",
+          message: "Informe o cartório."
+        },
+        {
+          name: "civilRegistryOffice",
+          message: "Selecione um cartório válido."
+        }
       ]
     },
 

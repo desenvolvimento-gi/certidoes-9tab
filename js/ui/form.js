@@ -44,6 +44,233 @@ function showCivilBlock() {
   document.getElementById(`civil_${selectedType}`).classList.remove("is-hidden");
 }
 
+function normalizeSearchText(text) {
+  return String(text || "")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLocaleLowerCase("pt-BR")
+    .trim();
+}
+
+function clearAutocomplete(optionsElement, inputElement) {
+  optionsElement.innerHTML = "";
+  optionsElement.classList.add("is-hidden");
+  inputElement.setAttribute("aria-expanded", "false");
+}
+
+function showAutocompleteOptions(inputElement, optionsElement, values, onSelect) {
+  clearAutocomplete(optionsElement, inputElement);
+
+  const term = normalizeSearchText(inputElement.value);
+
+  if (term.length < 2) {
+    return;
+  }
+
+  const matches = values
+    .filter((value) =>
+      normalizeSearchText(value).includes(term)
+    )
+    .slice(0, 10);
+
+  inputElement._autocompleteIndex = -1;
+
+  if (matches.length === 0) {
+    const empty = document.createElement("div");
+    empty.className = "autocomplete-empty";
+    empty.textContent = "Nenhuma opção encontrada";
+
+    optionsElement.appendChild(empty);
+  } else {
+    matches.forEach((value) => {
+      const option = document.createElement("div");
+
+      option.className = "autocomplete-option";
+      option.textContent = value;
+      option.dataset.value = value;
+      option.setAttribute("role", "option");
+
+      option.addEventListener("mousedown", (event) => {
+        event.preventDefault();
+        onSelect(value);
+      });
+
+      optionsElement.appendChild(option);
+    });
+  }
+
+  optionsElement.classList.remove("is-hidden");
+  inputElement.setAttribute("aria-expanded", "true");
+}
+
+function handleAutocompleteKeydown(
+  event,
+  inputElement,
+  optionsElement,
+  onSelect
+) {
+  const options = Array.from(
+    optionsElement.querySelectorAll(".autocomplete-option")
+  );
+
+  if (options.length === 0) {
+    return;
+  }
+
+  let index = inputElement._autocompleteIndex ?? -1;
+
+  if (event.key === "ArrowDown") {
+    event.preventDefault();
+
+    index = index < options.length - 1
+      ? index + 1
+      : 0;
+  } else if (event.key === "ArrowUp") {
+    event.preventDefault();
+
+    index = index > 0
+      ? index - 1
+      : options.length - 1;
+  } else if (event.key === "Enter") {
+    event.preventDefault();
+
+    if (index >= 0) {
+      onSelect(options[index].dataset.value);
+    } else if (options.length > 0) {
+      onSelect(options[0].dataset.value);
+    }
+
+    return;
+  }
+  else if (event.key === "Escape") {
+    clearAutocomplete(optionsElement, inputElement);
+    return;
+  } else {
+    return;
+  }
+
+  inputElement._autocompleteIndex = index;
+
+  options.forEach((option, optionIndex) => {
+    option.classList.toggle(
+      "is-active",
+      optionIndex === index
+    );
+  });
+
+  options[index].scrollIntoView({
+    block: "nearest"
+  });
+}
+
+function updateCivilCities() {
+  const uf = DOM.civilState.value;
+
+  DOM.civilCity.value = "";
+  DOM.civilRegistryOffice.value = "";
+
+  clearAutocomplete(
+    DOM.civilCityOptions,
+    DOM.civilCity
+  );
+
+  clearAutocomplete(
+    DOM.civilRegistryOfficeOptions,
+    DOM.civilRegistryOffice
+  );
+
+  DOM.civilRegistryOffice.disabled = true;
+  DOM.civilRegistryOffice.placeholder = "Selecione uma cidade primeiro";
+
+  if (!uf) {
+    DOM.civilCity.disabled = true;
+    DOM.civilCity.placeholder = "Selecione o estado primeiro";
+    return;
+  }
+
+  DOM.civilCity.disabled = false;
+  DOM.civilCity.placeholder = "Digite para pesquisar";
+}
+
+function handleCivilCityInput() {
+  const uf = DOM.civilState.value;
+
+  DOM.civilRegistryOffice.value = "";
+  DOM.civilRegistryOffice.disabled = true;
+  DOM.civilRegistryOffice.placeholder = "Selecione uma cidade primeiro";
+
+  clearAutocomplete(
+    DOM.civilRegistryOfficeOptions,
+    DOM.civilRegistryOffice
+  );
+
+  if (!uf) {
+    return;
+  }
+
+  const cities = getCivilCities(uf);
+
+  showAutocompleteOptions(
+    DOM.civilCity,
+    DOM.civilCityOptions,
+    cities,
+    selectCivilCity
+  );
+}
+
+function selectCivilCity(city) {
+  const uf = DOM.civilState.value;
+
+  DOM.civilCity.value = city;
+  clearFieldValidationState(DOM.civilCity);
+
+  clearAutocomplete(
+    DOM.civilCityOptions,
+    DOM.civilCity
+  );
+
+  const offices = getCivilRegistryOffices(uf, city);
+
+  DOM.civilRegistryOffice.value = "";
+
+  if (offices.length === 0) {
+    DOM.civilRegistryOffice.disabled = true;
+    DOM.civilRegistryOffice.placeholder = "Nenhum cartório encontrado";
+    return;
+  }
+
+  DOM.civilRegistryOffice.disabled = false;
+  DOM.civilRegistryOffice.placeholder = "Digite para pesquisar";
+}
+
+function handleCivilRegistryOfficeInput() {
+  const uf = DOM.civilState.value;
+  const city = DOM.civilCity.value.trim();
+
+  if (!uf || !city) {
+    return;
+  }
+
+  const offices = getCivilRegistryOffices(uf, city);
+
+  showAutocompleteOptions(
+    DOM.civilRegistryOffice,
+    DOM.civilRegistryOfficeOptions,
+    offices,
+    selectCivilRegistryOffice
+  );
+}
+
+function selectCivilRegistryOffice(office) {
+  DOM.civilRegistryOffice.value = office;
+  clearFieldValidationState(DOM.civilRegistryOffice);
+
+  clearAutocomplete(
+    DOM.civilRegistryOfficeOptions,
+    DOM.civilRegistryOffice
+  );
+}
+
 function addPropertyItem() {
   const itemNumber = DOM.propertyItems.querySelectorAll(".item-imovel").length + 1;
 
@@ -219,7 +446,7 @@ function buildRequestData() {
       return {
         tipoItem: type === "onus" && onusType ? `onus_${onusType}` : type,
         numeroItem: item.querySelector(".imovelNumero").value.trim(),
-        incluirOnus: item.querySelector(".incluirOnus").checked ? "SIM" : "NÃO" 
+        incluirOnus: item.querySelector(".incluirOnus").checked ? "SIM" : "NÃO"
       };
     });
   }
