@@ -385,6 +385,10 @@ function buildRequestData() {
   };
 
   if (certificateType === "combo_internet") {
+    request.tipoCertidao = DOM.comboComplete.checked
+      ? "combo_internet_completo"
+      : "combo_internet";
+
     request.subtipo = getValue("comboTipoPessoa");
 
     if (request.subtipo === "pf") {

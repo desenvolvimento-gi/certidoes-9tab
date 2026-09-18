@@ -22,6 +22,7 @@ function initializeDOM() {
     formSections: document.querySelectorAll(".form-block"),
     personTypeSelects: document.querySelectorAll("[data-person-type]"),
     civilType: document.getElementById("civilTipo"),
+    comboComplete: document.getElementById("comboCompleto"),
     civilState: document.getElementById("civilEstado"),
     civilCity: document.getElementById("civilCidade"),
     civilCityOptions: document.getElementById("civilCidadeOptions"),
